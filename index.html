@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Is All You Need</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .category-count {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        /* Resource Page Styles */
+        .resource-page {
+            display: none;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateX(-4px);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .resource-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .resource-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .resource-item:hover::after {
+            transform: scaleY(1);
+        }
+
+        .resource-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .resource-authors {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo">Optimization Is All You Need</h1>
+            <p class="tagline">Materials related to Optimization in AI</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Main Page -->
+        <div id="main-page" class="category-grid fade-in">
+            <div class="category-card" onclick="showCategory('textbook')">
+                <div class="category-icon">📚</div>
+                <h2 class="category-title">Textbook</h2>
+            </div>
+
+            <div class="category-card" onclick="showCategory('lecture')">
+                <div class="category-icon">🎓</div>
+                <h2 class="category-title">Lecture video and Notes</h2>
+                
+            </div>
+
+            <div class="category-card" onclick="showCategory('paper')">
+                <div class="category-icon">📄</div>
+                <h2 class="category-title">Paper</h2>
+                
+            </div>
+
+            <div class="category-card" onclick="showCategory('learning-theory')">
+                <div class="category-icon">🧠</div>
+                <h2 class="category-title">Learning Theory</h2>
+                
+            </div>
+
+            <div class="category-card" onclick="showCategory('mathematics')">
+                <div class="category-icon">🔢</div>
+                <h2 class="category-title">Undergraduate and Graduate Mathematics</h2>
+                
+            </div>
+
+            <div class="category-card" onclick="showCategory('etc')">
+                <div class="category-icon">💡</div>
+                <h2 class="category-title">ETC</h2>
+                <p class="category-description">Resources for being a good researcher</p>
+                
+            </div>
+        </div>
+
+        <!-- Resource Pages -->
+        <div id="textbook-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">📚 Textbook</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">Convex Optimization</h3>
+                    <p class="resource-authors">Stephen Boyd, Lieven Vandenberghe</p>
+                    
+                    <a href="https://stanford.edu/~boyd/cvxbook/" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Numerical Optimization</h3>
+                    <p class="resource-authors">Jorge Nocedal, Stephen Wright</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Introduction to Linear Optimization</h3>
+                    <p class="resource-authors">Dimitris Bertsimas, John N. Tsitsiklis</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="lecture-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">🎓 Lecture</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">EE364a: Convex Optimization I</h3>
+                    <p class="resource-authors">Stanford University - Stephen Boyd</p>
+                    
+                    <a href="https://stanford.edu/class/ee364a/" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Optimization Methods in Machine Learning</h3>
+                    <p class="resource-authors">MIT - Suvrit Sra</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="paper-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">📄 Paper</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">Adam: A Method for Stochastic Optimization</h3>
+                    <p class="resource-authors">Diederik P. Kingma, Jimmy Ba</p>
+                    
+                    <a href="https://arxiv.org/abs/1412.6980" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Proximal Policy Optimization Algorithms</h3>
+                    <p class="resource-authors">John Schulman et al.</p>
+                    
+                    <a href="https://arxiv.org/abs/1707.06347" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="learning-theory-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">🧠 Learning Theory</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">Understanding Machine Learning: From Theory to Algorithms</h3>
+                    <p class="resource-authors">Shai Shalev-Shwartz, Shai Ben-David</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Online Learning and Online Convex Optimization</h3>
+                    <p class="resource-authors">Shai Shalev-Shwartz</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="mathematics-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">🔢 Mathematics</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">Matrix Analysis and Applied Linear Algebra</h3>
+                    <p class="resource-authors">Carl D. Meyer</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Real Analysis and Probability</h3>
+                    <p class="resource-authors">R. M. Dudley</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="etc-page" class="resource-page">
+            <button class="back-button" onclick="showMain()">
+                ← 메인으로 돌아가기
+            </button>
+            <div class="page-header">
+                <h2 class="page-title">💡 ETC</h2>
+                
+            </div>
+            <div class="resource-list fade-in">
+                <div class="resource-item">
+                    <h3 class="resource-title">CVX: Matlab Software for Disciplined Convex Programming</h3>
+                    <p class="resource-authors">CVX Research</p>
+                    
+                    <a href="http://cvxr.com/cvx/" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+                <div class="resource-item">
+                    <h3 class="resource-title">Distill: Optimization</h3>
+                    <p class="resource-authors">Distill Publication</p>
+                    
+                    <a href="#" class="resource-link" target="_blank">
+                        자료 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Optimization Resources Hub. Made with ❤️ for the optimization community.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showCategory(category) {
+            // Hide main page
+            document.getElementById('main-page').style.display = 'none';
+            
+            // Hide all resource pages
+            const pages = document.querySelectorAll('.resource-page');
+            pages.forEach(page => page.style.display = 'none');
+            
+            // Show selected category page
+            const selectedPage = document.getElementById(category + '-page');
+            if (selectedPage) {
+                selectedPage.style.display = 'block';
+                selectedPage.classList.add('fade-in');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function showMain() {
+            // Hide all resource pages
+            const pages = document.querySelectorAll('.resource-page');
+            pages.forEach(page => page.style.display = 'none');
+            
+            // Show main page
+            document.getElementById('main-page').style.display = 'grid';
+            window.scrollTo(0, 0);
+        }
+
+        // Add hover effect to resource items
+        document.addEventListener('DOMContentLoaded', () => {
+            const resourceItems = document.querySelectorAll('.resource-item');
+            resourceItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(8px)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
