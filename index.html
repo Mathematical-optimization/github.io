@@ -11,6 +11,7 @@
             box-sizing: border-box;
         }
 
+        /* Dark mode (default) */
         :root {
             --primary-color: #2563eb;
             --secondary-color: #3b82f6;
@@ -23,12 +24,26 @@
             --link-color: #60a5fa;
         }
 
+        /* Light mode */
+        [data-theme="light"] {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --accent-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --link-color: #2563eb;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Header */
@@ -47,6 +62,50 @@
             margin: 0 auto;
             padding: 0 2rem;
             text-align: center;
+            position: relative;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            width: 60px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .theme-toggle-switch {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="light"] .theme-toggle-switch {
+            transform: translateX(30px);
+        }
+
+        .theme-icon {
+            font-size: 14px;
         }
 
         .logo {
@@ -152,6 +211,7 @@
         .back-button:hover {
             background: var(--primary-color);
             border-color: var(--primary-color);
+            color: white;
             transform: translateX(-4px);
         }
 
@@ -185,6 +245,10 @@
             border-bottom: 2px solid var(--border-color);
         }
 
+        [data-theme="light"] .resource-table thead {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
         .resource-table th {
             padding: 1rem;
             text-align: left;
@@ -201,12 +265,20 @@
             color: var(--text-secondary);
         }
 
+        [data-theme="light"] .resource-table td {
+            border-bottom: 1px solid var(--border-color);
+        }
+
         .resource-table tbody tr {
             transition: all 0.2s ease;
         }
 
         .resource-table tbody tr:hover {
             background: rgba(59, 130, 246, 0.05);
+        }
+
+        [data-theme="light"] .resource-table tbody tr:hover {
+            background: rgba(37, 99, 235, 0.02);
         }
 
         .resource-table tbody tr:last-child td {
@@ -240,6 +312,11 @@
             border-radius: 4px;
             font-size: 0.8rem;
             margin-right: 0.3rem;
+        }
+
+        [data-theme="light"] .tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
         }
 
         /* Footer */
@@ -298,6 +375,21 @@
             .hide-mobile {
                 display: none;
             }
+            
+            .theme-toggle {
+                right: 1rem;
+                width: 50px;
+                height: 26px;
+            }
+            
+            .theme-toggle-switch {
+                width: 20px;
+                height: 20px;
+            }
+            
+            [data-theme="light"] .theme-toggle-switch {
+                transform: translateX(24px);
+            }
         }
 
         /* Column widths */
@@ -312,6 +404,11 @@
         <div class="header-content">
             <h1 class="logo">Optimization Is All You Need</h1>
             <p class="tagline">Materials related to Optimization in AI</p>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <div class="theme-toggle-switch">
+                    <span class="theme-icon">🌙</span>
+                </div>
+            </button>
         </div>
     </header>
 
@@ -453,14 +550,26 @@
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Perturbations, Optimization, and Statistics</td>
-                        <td>Tamir Hazan</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td>Tamir Hazan, George Papandreou</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span> <span class="tag">Statistics</span></td>
                         <td><a href="https://www.cs.toronto.edu/~cmaddis/pubs/maddison_ppmontecarlo.pdf" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Differential Privacy: A Primer for a Non-Technical Audience</td>
+                        <td>Wood et al.</td>
+                        <td class="hide-mobile"><span class="tag">Privacy</span></td>
+                        <td><a href="https://privacytools.seas.harvard.edu/files/privacytools/files/pedagogical-document-dp_new.pdf" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Programming Differential Privacy</td>
+                        <td>Joseph P. Near and Chiké Abuah</td>
+                        <td class="hide-mobile"><span class="tag">Privacy</span></td>
+                        <td><a href="https://programming-dp.com" class="resource-link" target="_blank">View →</a></td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Understanding Machine Learning: From Theory to Algorithms</td>
                         <td>Shai Shalev-Shwartz, Shai Ben-David</td>
-                        <td class="hide-mobile"><span class="tag">Learning Theory</span></td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span> <span class="tag">Learning Theory</span></td>
                         <td><a href="https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/understanding-machine-learning-theory-algorithms.pdf" class="resource-link" target="_blank">View →</a></td>
                     </tr>
                     <tr>
@@ -474,12 +583,6 @@
                         <td>Mykel J. Kochenderfer, Tim A. Wheeler</td>
                         <td class="hide-mobile"><span class="tag">Optimization</span></td>
                         <td><a href="https://algorithmsbook.com/optimization/files/optimization.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Programming Differential Privacy</td>
-                        <td>Joseph P.Near</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://programming-dp.com/" class="resource-link" target="_blank">View →</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -523,33 +626,43 @@
                         <td class="hide-mobile">중~</td>
                     </tr>
                     <tr>
-                        <td class="resource-title-cell">강의 장소</td>
+                        <td class="resource-title-cell">강의 저장소</td>
                         <td colspan="2"><a href="https://github.com/niaohe/Convex-Optimization-Course" class="resource-link" target="_blank">GitHub →</a></td>
                         <td class="hide-mobile">중~</td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">🎯 Big-Data-Optimization-Course</td>
-                        <td colspan="2"><a href="https://github.com/niaohe/Big-Data-Optimization-Course" class="resource-link" target="_blank">View →</a></td>
+                        <td colspan="2"><a href="https://github.com/niaohe/Big-Data-Optimization-Course" class="resource-link" target="_blank">GitHub →</a></td>
                         <td class="hide-mobile">중~</td>
                     </tr>
                     <tr>
-                        <td class="resource-title-cell">Optimization Methods for Large-Scale Systems Lecture notes</td>
+                        <td class="resource-title-cell">Optimization Methods for Large-Scale Systems 텍</td>
                         <td colspan="2"><a href="https://www.seas.ucla.edu/~vandenbe/ee236c.html" class="resource-link" target="_blank">UCLA →</a></td>
                         <td class="hide-mobile">중~</td>
                     </tr>
                     <tr>
-                        <td class="resource-title-cell">Lecture notes</td>
-                        <td colspan="2"><a href="https://www.cs.ubc.ca/~schmidtm/Courses/" class="resource-link" target="_blank">Blog →</a></td>
+                        <td class="resource-title-cell">텍처 노트</td>
+                        <td colspan="2"><a href="https://www.cs.ubc.ca/~schmidtm/Courses/" class="resource-link" target="_blank">UBC →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Principles of Large-Scale Machine Learning 텍처 노트</td>
+                        <td colspan="2"><a href="https://www.cs.cornell.edu/courses/cs4787/2023fa/" class="resource-link" target="_blank">Cornell →</a></td>
                         <td class="hide-mobile">중~</td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Bayesian Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?v=3-KzIjoFJy4" class="resource-link" target="_blank">Blog →</a></td>
-                        <td class="hide-mobile">~</td>
+                        <td colspan="2"><a href="https://www.youtube.com/watch?v=3-KzIjoFJy4" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">상~</td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Francis Bach (Blog)</td>
                         <td colspan="2"><a href="https://francisbach.com/" class="resource-link" target="_blank">Blog →</a></td>
+                        <td class="hide-mobile">상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Francesco Orabona (Blog)</td>
+                        <td colspan="2"><a href="https://parameterfree.com/" class="resource-link" target="_blank">Blog →</a></td>
                         <td class="hide-mobile">상~</td>
                     </tr>
                     <tr>
@@ -558,8 +671,13 @@
                         <td class="hide-mobile">상~</td>
                     </tr>
                     <tr>
+                        <td class="resource-title-cell">Optimization Seminar</td>
+                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PLjvY6sC_0lhI2V5XCiy7sok3oUo8t7b0K" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">상~</td>
+                    </tr>
+                    <tr>
                         <td class="resource-title-cell">김영길 Information Theory</td>
-                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PL9k2wIz8VsfNqcZj6RFI6Zky_vxUjar1m" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PL9k2wIz8VsfNqcZj6Rfi6Zky_vxUjar1m" class="resource-link" target="_blank">YouTube →</a></td>
                         <td class="hide-mobile">상~</td>
                     </tr>
                 </tbody>
@@ -630,13 +748,19 @@
                         <td class="resource-title-cell">Optimal Transport</td>
                         <td>-</td>
                         <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
-                        <td><a href="https://optimaltransport.github.io" class="resource-link" target="_blank">🎯 awesome-ml4co</a></td>
+                        <td><a href="https://optimaltransport.github.io" class="resource-link" target="_blank">GitHub →</a></td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Combinatorial Optimization</td>
                         <td>-</td>
                         <td class="hide-mobile"><span class="tag">Combinatorial</span></td>
-                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
+                        <td><a href="https://github.com/awesome-ml4co/awesome-ml4co" class="resource-link" target="_blank">🎯 awesome-ml4co</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimal Transport</td>
+                        <td>-</td>
+                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
+                        <td><a href="https://www.bunne.ch/ot_tutorial/" class="resource-link" target="_blank">Tutorial →</a></td>
                     </tr>
                     <tr>
                         <td class="resource-title-cell">Online learning</td>
@@ -661,7 +785,7 @@
                     <tr>
                         <th class="col-title">제목</th>
                         <th class="col-author">주제</th>
-                        <th class="col-link" colspan="2">링크/난도</th>
+                        <th class="col-link" colspan="2">링크/난이이도</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -711,12 +835,12 @@
                         <td colspan="2"><a href="https://issuu.com/cmb321/docs/deep_learning_ebook" class="resource-link" target="_blank">View →</a> 중</td>
                     </tr>
                     <tr>
-                        <td class="resource-title-cell">Foundations of Machine Learning 2nd ed.</td>
+                        <td class="resource-title-cell">Foundations of Machine Learning 2nd ed. (Mehryar Mohri, Afshin Rostamizadeh)</td>
                         <td>Learning Theory</td>
                         <td colspan="2"><a href="https://cs.nyu.edu/~mohri/mlbook/" class="resource-link" target="_blank">View →</a> 중</td>
                     </tr>
                     <tr>
-                        <td class="resource-title-cell">Gradient Flows in Metric Spaces and in the Space of Probability Measures</td>
+                        <td class="resource-title-cell">Gradient Flows in Metric Spaces and in the Space of Probability Measures (Luigi Ambrosio)</td>
                         <td>Gradient Flow</td>
                         <td colspan="2"><a href="https://link.springer.com/book/10.1007/978-3-7643-8722-8" class="resource-link" target="_blank">View →</a> 상</td>
                     </tr>
@@ -854,7 +978,7 @@
                     </tr>
                     <tr>
                         <td class="resource-title-cell">The craft of research (4th edition)</td>
-                        <td>Tao</td>
+                        <td>Wayne C. Booth et al.</td>
                         <td class="hide-mobile"><span class="tag">Research Skills</span></td>
                         <td><a href="https://product.kyobobook.co.kr/detail/S000006601607" class="resource-link" target="_blank">View →</a></td>
                     </tr>
@@ -900,6 +1024,41 @@
     </footer>
 
     <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icon
+            const icon = document.querySelector('.theme-icon');
+            icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+        }
+
+        // Load saved theme preference or default to dark
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Set initial icon
+            const icon = document.querySelector('.theme-icon');
+            icon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+            
+            // Add hover effect to table rows
+            const tableRows = document.querySelectorAll('.resource-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(4px)';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+        });
+
         function showCategory(category) {
             // Hide main page
             document.getElementById('main-page').style.display = 'none';
@@ -926,19 +1085,6 @@
             document.getElementById('main-page').style.display = 'grid';
             window.scrollTo(0, 0);
         }
-
-        // Add hover effect to table rows
-        document.addEventListener('DOMContentLoaded', () => {
-            const tableRows = document.querySelectorAll('.resource-table tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateX(4px)';
-                });
-                row.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateX(0)';
-                });
-            });
-        });
     </script>
 </body>
 </html>
