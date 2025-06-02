@@ -20,6 +20,7 @@
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --border-color: #334155;
+            --link-color: #60a5fa;
         }
 
         body {
@@ -128,13 +129,6 @@
             line-height: 1.5;
         }
 
-        .category-count {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-
         /* Resource Page Styles */
         .resource-page {
             display: none;
@@ -177,75 +171,75 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .resource-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .resource-item {
+        /* Table Styles */
+        .resource-table {
+            width: 100%;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .resource-item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
+        .resource-table thead {
+            background: rgba(37, 99, 235, 0.1);
+            border-bottom: 2px solid var(--border-color);
         }
 
-        .resource-item:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .resource-item:hover::after {
-            transform: scaleY(1);
-        }
-
-        .resource-title {
-            font-size: 1.25rem;
+        .resource-table th {
+            padding: 1rem;
+            text-align: left;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             color: var(--text-primary);
-        }
-
-        .resource-authors {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .resource-description {
-            color: var(--text-secondary);
             font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .resource-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            color: var(--text-secondary);
+        }
+
+        .resource-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .resource-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .resource-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .resource-title-cell {
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
         .resource-link {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            gap: 0.3rem;
         }
 
         .resource-link:hover {
             color: var(--primary-color);
             transform: translateX(4px);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: rgba(96, 165, 250, 0.15);
+            color: var(--accent-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.3rem;
         }
 
         /* Footer */
@@ -291,7 +285,26 @@
             .container {
                 padding: 2rem 1rem;
             }
+
+            .resource-table {
+                font-size: 0.85rem;
+            }
+
+            .resource-table th,
+            .resource-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
         }
+
+        /* Column widths */
+        .col-title { width: 35%; }
+        .col-author { width: 25%; }
+        .col-category { width: 20%; }
+        .col-link { width: 20%; }
     </style>
 </head>
 <body>
@@ -308,221 +321,529 @@
             <div class="category-card" onclick="showCategory('textbook')">
                 <div class="category-icon">📚</div>
                 <h2 class="category-title">Textbook</h2>
+                <p class="category-description">Foundational texts on optimization theory and applications</p>
             </div>
 
             <div class="category-card" onclick="showCategory('lecture')">
                 <div class="category-icon">🎓</div>
                 <h2 class="category-title">Lecture video and Notes</h2>
-                
+                <p class="category-description">Course materials from leading universities</p>
             </div>
 
             <div class="category-card" onclick="showCategory('paper')">
                 <div class="category-icon">📄</div>
                 <h2 class="category-title">Paper</h2>
-                
+                <p class="category-description">Research papers on optimization methods</p>
             </div>
 
             <div class="category-card" onclick="showCategory('learning-theory')">
                 <div class="category-icon">🧠</div>
                 <h2 class="category-title">Learning Theory</h2>
-                
+                <p class="category-description">Theoretical foundations of machine learning</p>
             </div>
 
             <div class="category-card" onclick="showCategory('mathematics')">
                 <div class="category-icon">🔢</div>
                 <h2 class="category-title">Undergraduate and Graduate Mathematics</h2>
-                
+                <p class="category-description">Mathematical prerequisites for optimization</p>
             </div>
 
             <div class="category-card" onclick="showCategory('etc')">
                 <div class="category-icon">💡</div>
                 <h2 class="category-title">ETC</h2>
                 <p class="category-description">Resources for being a good researcher</p>
-                
             </div>
         </div>
 
-        <!-- Resource Pages -->
+        <!-- Textbook Page -->
         <div id="textbook-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
-                <h2 class="page-title">📚 Textbook</h2>
-                
+                <h2 class="page-title">📚 Mathematical Optimization Textbook</h2>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">Convex Optimization</h3>
-                    <p class="resource-authors">Stephen Boyd, Lieven Vandenberghe</p>
-                    
-                    <a href="https://stanford.edu/~boyd/cvxbook/" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Numerical Optimization</h3>
-                    <p class="resource-authors">Jorge Nocedal, Stephen Wright</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Introduction to Linear Optimization</h3>
-                    <p class="resource-authors">Dimitris Bertsimas, John N. Tsitsiklis</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">제목</th>
+                        <th class="col-author">저자</th>
+                        <th class="col-category hide-mobile">분류</th>
+                        <th class="col-link">링크</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">Convex Optimization</td>
+                        <td>Boyd</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Lectures on Convex Optimization</td>
+                        <td>Nesterov</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Large Scale Convex Optimization</td>
+                        <td>류경석</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://large-scale-book.mathopt.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">First-order Methods in Optimization</td>
+                        <td>Amir Beck</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://jacobaguirre.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Introduction to Linear Optimization</td>
+                        <td>Arkadi Nemirovski</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">An Invitation to Optimal Transport, Wasserstein Distances, and Gradient Flows</td>
+                        <td>Alessio Figalli & Federico Glaudo</td>
+                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
+                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Bandit Algorithms</td>
+                        <td>Tor Lattimore & Csaba Szepesvári</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://tor-lattimore.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Conditional Gradient Methods</td>
+                        <td>Gabor Braun et al.</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://arxiv.org/abs/2211.14103" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Introduction to Online Convex Optimization</td>
+                        <td>Elad Hazan</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://sites.google.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">A Modern Introduction to Online Learning</td>
+                        <td>Francesco Orabona</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://arxiv.org/abs/1912.13213" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Online Learning and Online Convex Optimization</td>
+                        <td>Shai Shalev-Shwartz</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://nowpublishers.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimization Algorithms for Distributed Machine Learning</td>
+                        <td>Gauri Joshi</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://link.springer.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Understanding Machine Learning: From Theory to Algorithms</td>
+                        <td>Shai Shalev-Shwartz, Shai Ben-David</td>
+                        <td class="hide-mobile"><span class="tag">Learning Theory</span></td>
+                        <td><a href="https://cs.huji.ac.il" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">An Introduction to Optimization</td>
+                        <td>Edwin K.P. Chong, Stanislaw H. Żak</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://gipsa-lab.grenoble-inp.fr" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Algorithms for Optimization</td>
+                        <td>Mykel J. Kochenderfer, Tim A. Wheeler</td>
+                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
+                        <td><a href="https://algorithmsbook.com" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Lecture Page -->
         <div id="lecture-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
-                <h2 class="page-title">🎓 Lecture</h2>
-                
+                <h2 class="page-title">🎓 Mathematical Optimization Lecture</h2>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">EE364a: Convex Optimization I</h3>
-                    <p class="resource-authors">Stanford University - Stephen Boyd</p>
-                    
-                    <a href="https://stanford.edu/class/ee364a/" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Optimization Methods in Machine Learning</h3>
-                    <p class="resource-authors">MIT - Suvrit Sra</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">강의자/명</th>
+                        <th class="col-author" colspan="2">링크</th>
+                        <th class="col-category hide-mobile">난이도</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">Boyd Convex Optimization</td>
+                        <td colspan="2"><a href="https://youtu.be/kV1ru-ln2I4?si=6rR3FKEu0gU3R8qR" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">상</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">EPFL Convex Optimization</td>
+                        <td colspan="2"><a href="https://youtube.com/playlist?list=PL4O4bXkI-fAeYrsBqTUYn2xMjjzjox1dF" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Pf. Constantine Caramanis Convex Optimization</td>
+                        <td colspan="2"><a href="https://www.youtube.com/watch?v=ee" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">윤세영 Convex Optimization</td>
+                        <td colspan="2"><a href="https://www.youtube.com/watch?v=9SQPCermh7E&list=PLsOI3VPEiqHSSCJh_bUYpXF-1TLB8VQ4k" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">강의 자장소</td>
+                        <td colspan="2"><a href="https://github.com/niaobe/Convex-Optimization-Course" class="resource-link" target="_blank">GitHub →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">🎯 Big-Data-Optimization-Course</td>
+                        <td colspan="2"><a href="#" class="resource-link" target="_blank">View →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimization Methods for Large-Scale Systems 택</td>
+                        <td colspan="2"><a href="http://www.seas.ucla.edu/~vandenbe/ee236c.html" class="resource-link" target="_blank">UCLA →</a></td>
+                        <td class="hide-mobile">중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Francis Bach (Blog)</td>
+                        <td colspan="2"><a href="https://francisbach.com/" class="resource-link" target="_blank">Blog →</a></td>
+                        <td class="hide-mobile">상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Bayesian Optimization (Blog)</td>
+                        <td colspan="2"><a href="https://rbcborealis.com/research/" class="resource-link" target="_blank">Blog →</a></td>
+                        <td class="hide-mobile">상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">김영길 Information Theory</td>
+                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PL9k2wIz8VsfNqcZj6Rfi6ZvQ2w7K2jS1S" class="resource-link" target="_blank">YouTube →</a></td>
+                        <td class="hide-mobile">상~</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Paper Page -->
         <div id="paper-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
-                <h2 class="page-title">📄 Paper</h2>
-                
+                <h2 class="page-title">📄 Mathematical Optimization Paper</h2>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">Adam: A Method for Stochastic Optimization</h3>
-                    <p class="resource-authors">Diederik P. Kingma, Jimmy Ba</p>
-                    
-                    <a href="https://arxiv.org/abs/1412.6980" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Proximal Policy Optimization Algorithms</h3>
-                    <p class="resource-authors">John Schulman et al.</p>
-                    
-                    <a href="https://arxiv.org/abs/1707.06347" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">논문</th>
+                        <th class="col-author">제 1저자</th>
+                        <th class="col-category hide-mobile">주제</th>
+                        <th class="col-link">링크</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">Theory of Convex Optimization for Machine learning</td>
+                        <td>Sebastien Bubeck</td>
+                        <td class="hide-mobile"><span class="tag">Convex Optimization</span></td>
+                        <td><a href="https://arxiv.org/abs/1405.4980" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimization for Deep learning: an overview</td>
+                        <td>Ruoyu sun</td>
+                        <td class="hide-mobile"><span class="tag">Convex & Non-Convex</span></td>
+                        <td><a href="https://arxiv.org/abs/1912.08957" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Recent Theoretical Advances in Non-Convex Optimization</td>
+                        <td>Marina Danilova</td>
+                        <td class="hide-mobile"><span class="tag">Non-Convex</span></td>
+                        <td><a href="https://arxiv.org/abs/2012.06188" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimization Methods for Large-Scale Machine Learning</td>
+                        <td>Leon Bottou</td>
+                        <td class="hide-mobile"><span class="tag">Convex & Non-Convex</span></td>
+                        <td><a href="https://arxiv.org/abs/1606.04838" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Handbook of Convergence theorems for (Stochastic) gradient methods</td>
+                        <td>G Gariigos</td>
+                        <td class="hide-mobile"><span class="tag">Convergence Analysis</span></td>
+                        <td><a href="https://arxiv.org/abs/2301.11235" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Federated Learning</td>
+                        <td>-</td>
+                        <td class="hide-mobile"><span class="tag">Federated Learning</span></td>
+                        <td><a href="https://arxiv.org/abs/2107.06917" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Optimal Transport</td>
+                        <td>-</td>
+                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
+                        <td><a href="https://optimaltransport.github.io" class="resource-link" target="_blank">🎯 awesome-ml4co</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Combinatorial Optimization</td>
+                        <td>-</td>
+                        <td class="hide-mobile"><span class="tag">Combinatorial</span></td>
+                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Online learning</td>
+                        <td>Francesco Orabona</td>
+                        <td class="hide-mobile"><span class="tag">Online learning</span></td>
+                        <td><a href="https://arxiv.org/abs/1912.13213" class="resource-link" target="_blank">arXiv →</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Learning Theory Page -->
         <div id="learning-theory-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
-                <h2 class="page-title">🧠 Learning Theory</h2>
-                
+                <h2 class="page-title">🧠 Deep Learning Theory</h2>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">Understanding Machine Learning: From Theory to Algorithms</h3>
-                    <p class="resource-authors">Shai Shalev-Shwartz, Shai Ben-David</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Online Learning and Online Convex Optimization</h3>
-                    <p class="resource-authors">Shai Shalev-Shwartz</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">제목</th>
+                        <th class="col-author">주제</th>
+                        <th class="col-link" colspan="2">링크/난도</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">A Survey on Statistical Theory of Deep Learning</td>
+                        <td>Learning theory</td>
+                        <td colspan="2"><a href="https://arxiv.org/abs/2401.07187" class="resource-link" target="_blank">arXiv →</a> 상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Deep Learning Theory Lecture Notes (Matus Telgarsky)</td>
+                        <td>Learning theory</td>
+                        <td colspan="2"><a href="https://mjt.cs.illinois.edu/dlt/" class="resource-link" target="_blank">View →</a> 상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Theoretical Machine Learning (Elad Hazan)</td>
+                        <td>Learning theory</td>
+                        <td colspan="2"><a href="https://sites.google.com/view/cos511fall2024/lectures" class="resource-link" target="_blank">View →</a> 상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Statistics and Information Theory Lecture (John Duchi)</td>
+                        <td>Information theory</td>
+                        <td colspan="2"><a href="https://web.stanford.edu/class/stats311/lecture-notes.pdf" class="resource-link" target="_blank">View →</a> 상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Learning Theory from First Principles (Francis Bach)</td>
+                        <td>Learning theory</td>
+                        <td colspan="2"><a href="https://www.di.ens.fr/~fbach/learning_theory_class/index.html" class="resource-link" target="_blank">View →</a> 상~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Alice's Adventures in a Differentiable Wonderland</td>
+                        <td>Deep learning</td>
+                        <td colspan="2"><a href="https://arxiv.org/abs/2404.17625" class="resource-link" target="_blank">arXiv →</a> 중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Understanding Deep Learning</td>
+                        <td>Deep learning</td>
+                        <td colspan="2"><a href="https://udlbook.github.io/udlbook/" class="resource-link" target="_blank">View →</a> 중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Mathematical Foundation of RL</td>
+                        <td>RL</td>
+                        <td colspan="2"><a href="https://discuss.pytorch.kr/t/mathematical-foundation-of-rl/6405" class="resource-link" target="_blank">View →</a> 중~</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Deep Learning: Foundations and Concepts (Bishop & Bishop)</td>
+                        <td>Deep Learning</td>
+                        <td colspan="2"><a href="https://issuu.com/cmb321/docs/deep_learning_ebook" class="resource-link" target="_blank">View →</a> 중</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Foundations of Machine Learning 2nd ed.</td>
+                        <td>Learning Theory</td>
+                        <td colspan="2"><a href="https://cs.nyu.edu/~mohri/mlbook/" class="resource-link" target="_blank">View →</a> 중</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Gradient Flows in Metric Spaces and in the Space of Probability Measures</td>
+                        <td>Gradient Flow</td>
+                        <td colspan="2"><a href="https://link.springer.com/book/10.1007/978-3-7643-8722-8" class="resource-link" target="_blank">View →</a> 상</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Probabilistic Machine Learning (Kevin Patrick Murphy)</td>
+                        <td>Deep Learning, Machine Learning</td>
+                        <td colspan="2"><a href="https://probml.github.io/pml-book/" class="resource-link" target="_blank">View →</a> 중</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Mathematics Page -->
         <div id="mathematics-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
-                <h2 class="page-title">🔢 Mathematics</h2>
-                
+                <h2 class="page-title">🔢 Undergraduate & Graduate level Mathematics</h2>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">Matrix Analysis and Applied Linear Algebra</h3>
-                    <p class="resource-authors">Carl D. Meyer</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Real Analysis and Probability</h3>
-                    <p class="resource-authors">R. M. Dudley</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">이름</th>
+                        <th class="col-link" colspan="2">URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">📁 Diffusion에 이르는 길</td>
+                        <td colspan="2"><a href="https://drive.google.com" class="resource-link" target="_blank">Google Drive →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Understanding Analysis (Stephen Abbott)</td>
+                        <td colspan="2">X</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Principles of Mathematical Analysis (Rudin)</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Real and Complex Analysis (Rudin)</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Linear Algebra Done Right</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">프리드버그 선형대수학</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">선형대수와 군</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Matrix Calculus (for Machine Learning and Beyond) : Lecture notes for MIT 18.063</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">The Matrix Cookbook (Kaare Brandt Petersen)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Matrix Differential Calculus with Applications in Statistics and Econometrics. (Jan R. Magnus)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">A first course in Stochastic Calculus (Louis-Pierre Arguin)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">High-Dimensional Probability (An Introduction with Applications in Data Science), (Roman Vershynin)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Matrix Calculus (for Machine Learning and Beyond) : Based on MIT course 18.063</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Matrices, Moments and Quadrature with Applications (Gene H.Golub)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">해석개론 (김성기, 김도한, 계승혁)</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Probability and Measure (Patrick Billingsley)</td>
+                        <td colspan="2">구글링 후 다운로드 가능.</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Fourier Analysis (Elias M.STEIN & RAMI SHAKARCHI)</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Stochastic Calculus for Finance (Continuous-Time Models, Steven E.Shreve)</td>
+                        <td colspan="2">-</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- ETC Page -->
         <div id="etc-page" class="resource-page">
             <button class="back-button" onclick="showMain()">
-                ← 메인으로 돌아가기
+                ← Back to Main
             </button>
             <div class="page-header">
                 <h2 class="page-title">💡 ETC</h2>
-                
+                <p class="tagline">Resources for being a good researcher</p>
             </div>
-            <div class="resource-list fade-in">
-                <div class="resource-item">
-                    <h3 class="resource-title">CVX: Matlab Software for Disciplined Convex Programming</h3>
-                    <p class="resource-authors">CVX Research</p>
-                    
-                    <a href="http://cvxr.com/cvx/" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-                <div class="resource-item">
-                    <h3 class="resource-title">Distill: Optimization</h3>
-                    <p class="resource-authors">Distill Publication</p>
-                    
-                    <a href="#" class="resource-link" target="_blank">
-                        자료 보기 →
-                    </a>
-                </div>
-            </div>
+            <table class="resource-table fade-in">
+                <thead>
+                    <tr>
+                        <th class="col-title">제목</th>
+                        <th class="col-author">저자</th>
+                        <th class="col-category hide-mobile">분류</th>
+                        <th class="col-link">링크</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="resource-title-cell">How to Read a Paper</td>
+                        <td>S. Keshav</td>
+                        <td class="hide-mobile"><span class="tag">Research Skills</span></td>
+                        <td><a href="http://ccr.sigcomm.org/online/files/p83-keshavA.pdf" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">How to Write a Great Research Paper</td>
+                        <td>Simon Peyton Jones</td>
+                        <td class="hide-mobile"><span class="tag">Writing</span></td>
+                        <td><a href="https://www.microsoft.com/en-us/research/academic-program/write-great-research-paper/" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">The PhD Grind</td>
+                        <td>Philip Guo</td>
+                        <td class="hide-mobile"><span class="tag">PhD Life</span></td>
+                        <td><a href="http://pgbovine.net/PhD-memoir.htm" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">Advice for Researchers and Students</td>
+                        <td>Michael Ernst</td>
+                        <td class="hide-mobile"><span class="tag">Career Advice</span></td>
+                        <td><a href="https://homes.cs.washington.edu/~mernst/advice/" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                    <tr>
+                        <td class="resource-title-cell">You and Your Research</td>
+                        <td>Richard Hamming</td>
+                        <td class="hide-mobile"><span class="tag">Research Philosophy</span></td>
+                        <td><a href="http://www.cs.virginia.edu/~robins/YouAndYourResearch.html" class="resource-link" target="_blank">View →</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2024 Optimization Resources Hub. Made with ❤️ for the optimization community.</p>
+            <p>&copy; 2024 Optimization Is All You Need. Created with passion for the optimization community.</p>
         </div>
     </footer>
 
@@ -554,14 +875,14 @@
             window.scrollTo(0, 0);
         }
 
-        // Add hover effect to resource items
+        // Add hover effect to table rows
         document.addEventListener('DOMContentLoaded', () => {
-            const resourceItems = document.querySelectorAll('.resource-item');
-            resourceItems.forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateX(8px)';
+            const tableRows = document.querySelectorAll('.resource-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(4px)';
                 });
-                item.addEventListener('mouseleave', function() {
+                row.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateX(0)';
                 });
             });
