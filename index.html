@@ -1,1092 +1,2182 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimization Is All You Need</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Optimization Is All You Need — mathematical optimization resources for AI researchers." />
+  <title>Optimization Is All You Need</title>
 
-        /* Dark mode (default) */
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --accent-color: #60a5fa;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-            --link-color: #60a5fa;
-        }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Light mode */
-        [data-theme="light"] {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --accent-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --border-color: #e2e8f0;
-            --link-color: #2563eb;
-        }
+    /* Theme */
+    :root {
+      --primary: #2563eb;
+      --primary2: #3b82f6;
+      --accent: #60a5fa;
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      --bg: #0b1222;
+      --panel: rgba(30, 41, 59, 0.85);
+      --card: rgba(30, 41, 59, 0.7);
+      --card-solid: #1e293b;
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 2rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.22);
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            text-align: center;
-            position: relative;
-        }
+      --link: #7dd3fc;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --shadow-soft: 0 6px 18px rgba(0,0,0,0.25);
 
-        /* Theme Toggle */
-        .theme-toggle {
-            position: absolute;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            width: 60px;
-            height: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 3px;
-            transition: all 0.3s ease;
-        }
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --focus: 0 0 0 4px rgba(96, 165, 250, 0.25);
+    }
 
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --panel: rgba(255, 255, 255, 0.92);
+      --card: rgba(255, 255, 255, 0.78);
+      --card-solid: #ffffff;
 
-        .theme-toggle-switch {
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
+      --text: #0f172a;
+      --muted: #475569;
+      --border: rgba(15, 23, 42, 0.12);
 
-        [data-theme="light"] .theme-toggle-switch {
-            transform: translateX(30px);
-        }
+      --link: #2563eb;
+      --shadow: 0 10px 26px rgba(2, 6, 23, 0.12);
+      --shadow-soft: 0 6px 16px rgba(2, 6, 23, 0.09);
+      --focus: 0 0 0 4px rgba(37, 99, 235, 0.16);
+    }
 
-        .theme-icon {
-            font-size: 14px;
-        }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 12% -10%, rgba(37,99,235,0.35), transparent 55%),
+                  radial-gradient(900px 500px at 95% 0%, rgba(96,165,250,0.22), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
 
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            margin-bottom: 0.5rem;
-        }
+    a { color: var(--link); }
+    a:hover { color: var(--primary2); }
 
-        .tagline {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
+    :focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
 
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.88), rgba(59, 130, 246, 0.78));
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 12px 28px rgba(2,6,23,0.25);
+    }
 
-        /* Category Grid */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.3rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .category-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 240px;
+    }
 
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
+    .logo {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.02em;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      line-height: 1.1;
+    }
 
-        .category-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        }
+    .tagline {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
 
-        .category-card:hover::before {
-            transform: scaleX(1);
-        }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        .category-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 20px currentColor);
-        }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
 
-        .category-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
+    .chip:hover {
+      background: rgba(255,255,255,0.20);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-1px);
+    }
 
-        .category-description {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.30);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { background: rgba(255,255,255,0.24); transform: translateY(-1px); }
+    .theme-icon { font-size: 18px; line-height: 1; }
 
-        /* Resource Page Styles */
-        .resource-page {
-            display: none;
-        }
+    .header-searchbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 1.15rem 1.5rem;
+    }
 
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin-bottom: 2rem;
-            cursor: pointer;
-        }
+    .global-search {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.65rem;
+      align-items: center;
+    }
 
-        .back-button:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-            transform: translateX(-4px);
-        }
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.30);
+      background: rgba(15, 23, 42, 0.18);
+      color: white;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    [data-theme="light"] .search-input {
+      background: rgba(255, 255, 255, 0.78);
+      border-color: rgba(15,23,42,0.14);
+      color: var(--text);
+    }
 
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
+    .search-input::placeholder { color: rgba(255,255,255,0.75); }
+    [data-theme="light"] .search-input::placeholder { color: rgba(15,23,42,0.55); }
 
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .search-input:focus { border-color: rgba(255,255,255,0.55); background: rgba(15,23,42,0.26); }
+    [data-theme="light"] .search-input:focus { border-color: rgba(37,99,235,0.35); background: rgba(255,255,255,0.95); }
 
-        /* Table Styles */
-        .resource-table {
-            width: 100%;
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      padding: 0.2rem 0.45rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.92);
+      font-size: 0.8rem;
+      min-width: 36px;
+    }
+    [data-theme="light"] .kbd {
+      border-color: rgba(15,23,42,0.18);
+      background: rgba(15,23,42,0.06);
+      color: rgba(15,23,42,0.85);
+    }
 
-        .resource-table thead {
-            background: rgba(37, 99, 235, 0.1);
-            border-bottom: 2px solid var(--border-color);
-        }
+    /* Main container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.2rem 1.5rem 3.5rem;
+    }
 
-        [data-theme="light"] .resource-table thead {
-            background: rgba(37, 99, 235, 0.05);
-        }
+    /* Main Page / Category grid */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
 
-        .resource-table th {
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    .category-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.35rem 1.2rem;
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
 
-        .resource-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-            color: var(--text-secondary);
-        }
+    .category-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 300px at -10% 0%, rgba(96,165,250,0.18), transparent 60%),
+                  radial-gradient(800px 260px at 110% 10%, rgba(37,99,235,0.18), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
 
-        [data-theme="light"] .resource-table td {
-            border-bottom: 1px solid var(--border-color);
-        }
+    .category-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96,165,250,0.55);
+      box-shadow: var(--shadow);
+    }
+    .category-card:hover::before { opacity: 1; }
 
-        .resource-table tbody tr {
-            transition: all 0.2s ease;
-        }
+    .category-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
 
-        .resource-table tbody tr:hover {
-            background: rgba(59, 130, 246, 0.05);
-        }
+    .category-icon {
+      font-size: 2.25rem;
+      filter: drop-shadow(0 0 18px currentColor);
+    }
 
-        [data-theme="light"] .resource-table tbody tr:hover {
-            background: rgba(37, 99, 235, 0.02);
-        }
+    .category-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      background: rgba(96,165,250,0.14);
+      border: 1px solid rgba(96,165,250,0.25);
+      color: var(--accent);
+      min-width: 64px;
+    }
+    [data-theme="light"] .category-count {
+      background: rgba(37,99,235,0.08);
+      border-color: rgba(37,99,235,0.18);
+      color: var(--primary);
+    }
 
-        .resource-table tbody tr:last-child td {
-            border-bottom: none;
-        }
+    .category-title {
+      font-size: 1.2rem;
+      font-weight: 750;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
 
-        .resource-title-cell {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
+    .category-description {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
 
-        .resource-link {
-            color: var(--link-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
+    /* Resource pages */
+    .resource-page { display: none; }
+    .fade-in { animation: fadeIn 0.5s ease-out; }
 
-        .resource-link:hover {
-            color: var(--primary-color);
-            transform: translateX(4px);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .tag {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            background: rgba(96, 165, 250, 0.15);
-            color: var(--accent-color);
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-right: 0.3rem;
-        }
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin: 1rem 0 1.35rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
 
-        [data-theme="light"] .tag {
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary-color);
-        }
+    .page-title {
+      font-size: 2rem;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        /* Footer */
-        footer {
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 4rem;
-        }
+    .page-subtitle {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
 
-        .footer-content {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 0.95rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      margin-top: 0.25rem;
+      text-decoration: none;
+      width: fit-content;
+    }
+    .back-button:hover {
+      transform: translateX(-2px);
+      border-color: rgba(96,165,250,0.55);
+      background: rgba(96,165,250,0.10);
+    }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .toolbar {
+      position: sticky;
+      top: 138px;
+      z-index: 50;
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.00), rgba(2, 6, 23, 0.12) 18%, rgba(2,6,23,0.00));
+      padding: 0.75rem 0;
+      margin-bottom: 0.75rem;
+    }
+    [data-theme="light"] .toolbar {
+      background: linear-gradient(to bottom, rgba(248, 250, 252, 0.00), rgba(248, 250, 252, 0.82) 18%, rgba(248, 250, 252, 0.00));
+    }
 
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
+    .toolbar-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 0.55fr 0.55fr auto;
+      gap: 0.65rem;
+      align-items: center;
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .category-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .logo {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 2rem 1rem;
-            }
+    .select {
+      width: 100%;
+      padding: 0.72rem 0.85rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .select:hover { border-color: rgba(96,165,250,0.55); }
+    .select:focus { border-color: rgba(96,165,250,0.65); }
 
-            .resource-table {
-                font-size: 0.85rem;
-            }
+    .count {
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+      justify-self: end;
+    }
 
-            .resource-table th,
-            .resource-table td {
-                padding: 0.75rem 0.5rem;
-            }
+    /* Table */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
 
-            .hide-mobile {
-                display: none;
-            }
-            
-            .theme-toggle {
-                right: 1rem;
-                width: 50px;
-                height: 26px;
-            }
-            
-            .theme-toggle-switch {
-                width: 20px;
-                height: 20px;
-            }
-            
-            [data-theme="light"] .theme-toggle-switch {
-                transform: translateX(24px);
-            }
-        }
+    .resource-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
 
-        /* Column widths */
-        .col-title { width: 35%; }
-        .col-author { width: 25%; }
-        .col-category { width: 20%; }
-        .col-link { width: 20%; }
-    </style>
+    .resource-table thead th {
+      position: sticky;
+      top: 218px;
+      z-index: 10;
+      background: rgba(37,99,235,0.11);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1rem;
+      text-align: left;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      user-select: none;
+    }
+    [data-theme="light"] .resource-table thead th {
+      background: rgba(37,99,235,0.06);
+    }
+
+    .resource-table tbody td {
+      padding: 0.95rem 1rem;
+      border-bottom: 1px solid rgba(148,163,184,0.16);
+      color: var(--muted);
+      vertical-align: top;
+    }
+    [data-theme="light"] .resource-table tbody td { border-bottom-color: rgba(15,23,42,0.08); }
+
+    .resource-table tbody tr {
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .resource-table tbody tr:hover {
+      background: rgba(96,165,250,0.08);
+      transform: translateX(3px);
+    }
+    [data-theme="light"] .resource-table tbody tr:hover {
+      background: rgba(37,99,235,0.04);
+    }
+
+    .resource-title {
+      color: var(--text);
+      font-weight: 650;
+      margin-bottom: 0.25rem;
+      line-height: 1.35;
+    }
+    .resource-meta {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.35rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(96,165,250,0.25);
+      background: rgba(96,165,250,0.12);
+      color: var(--accent);
+      font-size: 0.78rem;
+      line-height: 1.3;
+    }
+    [data-theme="light"] .tag {
+      border-color: rgba(37,99,235,0.18);
+      background: rgba(37,99,235,0.08);
+      color: var(--primary);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(15,23,42,0.18);
+      color: rgba(255,255,255,0.90);
+      line-height: 1.3;
+    }
+    [data-theme="light"] .badge {
+      border-color: rgba(15,23,42,0.12);
+      background: rgba(15,23,42,0.04);
+      color: rgba(15,23,42,0.84);
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 650;
+      white-space: nowrap;
+      transition: transform 0.15s ease, color 0.15s ease;
+    }
+    .resource-link:hover { transform: translateX(2px); color: var(--primary2); }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .muted { color: var(--muted); }
+
+    /* Column widths */
+    .col-title { width: 44%; }
+    .col-author { width: 22%; }
+    .col-year { width: 9%; }
+    .col-tags { width: 17%; }
+    .col-link { width: 8%; }
+
+    .hide-mobile { display: table-cell; }
+
+    /* Global search results */
+    .global-results {
+      margin-top: 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 1.1rem 1.1rem 0.6rem;
+      display: none;
+      backdrop-filter: blur(10px);
+    }
+
+    .results-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .results-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .results-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.85rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .result-card {
+      background: rgba(15,23,42,0.12);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 0.95rem 0.85rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+    }
+    [data-theme="light"] .result-card { background: rgba(15,23,42,0.03); }
+    .result-card:hover { transform: translateY(-2px); border-color: rgba(96,165,250,0.55); }
+
+    .result-kicker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .result-category {
+      font-size: 0.82rem;
+      font-weight: 750;
+      color: rgba(255,255,255,0.86);
+      background: rgba(255,255,255,0.14);
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    [data-theme="light"] .result-category {
+      color: rgba(15,23,42,0.80);
+      background: rgba(15,23,42,0.05);
+      border-color: rgba(15,23,42,0.10);
+    }
+
+    .result-title {
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 0.2rem;
+    }
+
+    .result-authors { color: var(--muted); font-size: 0.92rem; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      z-index: 200;
+    }
+    [data-theme="light"] .modal { background: rgba(2, 6, 23, 0.38); }
+
+    .modal-card {
+      width: min(860px, 100%);
+      background: var(--card-solid);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1rem 1.15rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: linear-gradient(135deg, rgba(37,99,235,0.10), rgba(96,165,250,0.06));
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 850;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .modal-close {
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.12);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 0.45rem 0.65rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+    }
+    .modal-close:hover { transform: translateY(-1px); border-color: rgba(96,165,250,0.55); background: rgba(96,165,250,0.10); }
+
+    .modal-body {
+      padding: 1rem 1.15rem 1.2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.25rem;
+    }
+
+    .kv {
+      padding: 0.85rem 0.9rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.10);
+    }
+    [data-theme="light"] .kv { background: rgba(15,23,42,0.03); }
+
+    .k { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
+    .v { color: var(--text); font-size: 0.98rem; line-height: 1.45; }
+
+    .modal-links { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.6rem; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(15,23,42,0.10);
+      padding: 1.8rem 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+    }
+    [data-theme="light"] footer { background: rgba(15,23,42,0.03); }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .toolbar-inner { grid-template-columns: 1fr 1fr 1fr; }
+      .count { justify-self: start; grid-column: 1 / -1; }
+      .resource-table thead th { top: 252px; }
+    }
+
+    @media (max-width: 760px) {
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      .header-actions { width: 100%; justify-content: space-between; }
+      .global-search { grid-template-columns: 1fr; }
+      .toolbar { top: 170px; }
+      .toolbar-inner { grid-template-columns: 1fr; }
+      .hide-mobile { display: none; }
+      .resource-table thead th { top: 310px; }
+      .modal-body { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <div class="header-content">
-            <h1 class="logo">Optimization Is All You Need</h1>
-            <p class="tagline">Materials related to Optimization in AI</p>
-            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                <div class="theme-toggle-switch">
-                    <span class="theme-icon">🌙</span>
-                </div>
-            </button>
-        </div>
-    </header>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo">Optimization Is All You Need</div>
+        <div class="tagline">AI 연구자를 위한 Mathematical Optimization 리소스 모음</div>
+      </div>
 
-    <div class="container">
-        <!-- Main Page -->
-        <div id="main-page" class="category-grid fade-in">
-            <div class="category-card" onclick="showCategory('textbook')">
-                <div class="category-icon">📚</div>
-                <h2 class="category-title">Textbook</h2>
-                <p class="category-description">Foundational texts on optimization theory and applications</p>
-            </div>
+      <div class="header-actions">
+        <span class="chip" title="키보드 단축키">
+          <span>Search</span>
+          <span class="kbd">/</span>
+        </span>
 
-            <div class="category-card" onclick="showCategory('lecture')">
-                <div class="category-icon">🎓</div>
-                <h2 class="category-title">Lecture video and Notes</h2>
-                <p class="category-description">Course materials from leading universities</p>
-            </div>
-
-            <div class="category-card" onclick="showCategory('paper')">
-                <div class="category-icon">📄</div>
-                <h2 class="category-title">Paper</h2>
-                <p class="category-description">Research papers on optimization methods</p>
-            </div>
-
-            <div class="category-card" onclick="showCategory('learning-theory')">
-                <div class="category-icon">🧠</div>
-                <h2 class="category-title">Learning Theory</h2>
-                <p class="category-description">Theoretical foundations of machine learning</p>
-            </div>
-
-            <div class="category-card" onclick="showCategory('mathematics')">
-                <div class="category-icon">🔢</div>
-                <h2 class="category-title">Undergraduate and Graduate Mathematics</h2>
-                <p class="category-description">Mathematical prerequisites for optimization</p>
-            </div>
-
-            <div class="category-card" onclick="showCategory('etc')">
-                <div class="category-icon">💡</div>
-                <h2 class="category-title">ETC</h2>
-                <p class="category-description">Resources for being a good researcher</p>
-            </div>
-        </div>
-
-        <!-- Textbook Page -->
-        <div id="textbook-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">📚 Mathematical Optimization Textbook</h2>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">제목</th>
-                        <th class="col-author">저자</th>
-                        <th class="col-category hide-mobile">분류</th>
-                        <th class="col-link">링크</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">Convex Optimization</td>
-                        <td>Boyd</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Lectures on Convex Optimization</td>
-                        <td>Nesterov</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Large Scale Convex Optimization</td>
-                        <td>류경석</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://large-scale-book.mathopt.com" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">First-order Methods in Optimization</td>
-                        <td>Amir Beck</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://www.jacobaguirre.com/First%20Order%20Methods%20in%20Optimization.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Introduction to Linear Optimization</td>
-                        <td>Arkadi Nemirovski</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Practical Optimization</td>
-                        <td>Philip E.Gill</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">An Invitation to Optimal Transport, Wasserstein Distances, and Gradient Flows</td>
-                        <td>Alessio Figalli & Federico Glaudo</td>
-                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
-                        <td><a href="#" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Bandit Algorithms</td>
-                        <td>Tor Lattimore & Csaba Szepesvári</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://tor-lattimore.com/downloads/book/book.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Bandit Convex Optimisation</td>
-                        <td>Tor Lattimore</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://tor-lattimore.com/downloads/cvx-book/cvx.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Conditional Gradient Methods</td>
-                        <td>Gabor Braun et al.</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://arxiv.org/abs/2211.14103" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Introduction to Online Convex Optimization</td>
-                        <td>Elad Hazan</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://sites.google.com/view/intro-oco/ver-2-0" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">A Modern Introduction to Online Learning</td>
-                        <td>Francesco Orabona</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://arxiv.org/abs/1912.13213" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Online Learning and Online Convex Optimization</td>
-                        <td>Shai Shalev-Shwartz</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://www.nowpublishers.com/article/Details/MAL-018" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimization Algorithms for Distributed Machine Learning</td>
-                        <td>Gauri Joshi</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://link.springer.com/book/10.1007/978-3-031-19067-4" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Perturbations, Optimization, and Statistics</td>
-                        <td>Tamir Hazan, George Papandreou</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span> <span class="tag">Statistics</span></td>
-                        <td><a href="https://www.cs.toronto.edu/~cmaddis/pubs/maddison_ppmontecarlo.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Differentiable programming</td>
-                        <td>DeepMind.</td>
-                        <td class="hide-mobile"><span class="tag">Privacy</span></td>
-                        <td><a href="https://arxiv.org/abs/2403.14606" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Programming Differential Privacy</td>
-                        <td>Joseph P. Near and Chiké Abuah</td>
-                        <td class="hide-mobile"><span class="tag">Privacy</span></td>
-                        <td><a href="https://programming-dp.com" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Understanding Machine Learning: From Theory to Algorithms</td>
-                        <td>Shai Shalev-Shwartz, Shai Ben-David</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span> <span class="tag">Learning Theory</span></td>
-                        <td><a href="https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/understanding-machine-learning-theory-algorithms.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">An Introduction to Optimization</td>
-                        <td>Edwin K.P. Chong, Stanislaw H. Żak</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://www.gipsa-lab.grenoble-inp.fr/~ahmad.hably/Documents/IntroOptimization.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Algorithms for Optimization</td>
-                        <td>Mykel J. Kochenderfer, Tim A. Wheeler</td>
-                        <td class="hide-mobile"><span class="tag">Optimization</span></td>
-                        <td><a href="https://algorithmsbook.com/optimization/files/optimization.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Lecture Page -->
-        <div id="lecture-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">🎓 Mathematical Optimization Lecture</h2>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">강의자/명</th>
-                        <th class="col-author" colspan="2">링크</th>
-                        <th class="col-category hide-mobile">난이도</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">Boyd Convex Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?si=6rR3FKEu0gU3R8qR&v=kV1ru-Inzl4&feature=youtu.be" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">상</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">EPFL Convex Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PL4O4bXkI-fAeYrsBqTUYn2xMjJAqlFQzX&si=yNG5szrGhxJD0PGu" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Pf. Constantine Caramanis Convex Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?v=ee-HYD6kKqM&list=PLXsmhnDvpjORzPelSDs0LSDrfJcqyLlZc" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">윤세영 Convex Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?v=95QPCermh7E&list=PLsQI3WOaT8hjGn4fZ_ANIqGRDtK_xpSjB" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Roger Grosse Lecture notes</td>
-                        <td colspan="2"><a href="https://www.cs.toronto.edu/~rgrosse/teaching.html" class="resource-link" target="_blank">Blog →</a></td>
-                        <td class="hide-mobile">중상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimization Methods for Large-Scale Systems 텍</td>
-                        <td colspan="2"><a href="https://www.seas.ucla.edu/~vandenbe/ee236c.html" class="resource-link" target="_blank">UCLA →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">렉처 노트</td>
-                        <td colspan="2"><a href="https://www.cs.ubc.ca/~schmidtm/Courses/" class="resource-link" target="_blank">UBC →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Principles of Large-Scale Machine Learning 텍처 노트</td>
-                        <td colspan="2"><a href="https://www.cs.cornell.edu/courses/cs4787/2023fa/" class="resource-link" target="_blank">Cornell →</a></td>
-                        <td class="hide-mobile">중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Bayesian Optimization</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?v=3-KzIjoFJy4" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Francis Bach (Blog)</td>
-                        <td colspan="2"><a href="https://francisbach.com/" class="resource-link" target="_blank">Blog →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Francesco Orabona (Blog)</td>
-                        <td colspan="2"><a href="https://parameterfree.com/" class="resource-link" target="_blank">Blog →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Bayesian Optimization (Blog)</td>
-                        <td colspan="2"><a href="https://rbcborealis.com/research/" class="resource-link" target="_blank">Blog →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">김영길 Information Theory</td>
-                        <td colspan="2"><a href="https://www.youtube.com/watch?v=WDHFuze6AKs&list=PL9k2wIz8VsfNqcZj6RFI6Zky_vxUjar1m&index=7" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">이정우 Information Theory</td>
-                        <td colspan="2"><a href="https://www.youtube.com/playlist?list=PLKs7xpqpX1bcy1pcwHOw80G8EoQoZ0OOt" class="resource-link" target="_blank">YouTube →</a></td>
-                        <td class="hide-mobile">상~</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Paper Page -->
-        <div id="paper-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">📄 Mathematical Optimization Paper</h2>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">논문</th>
-                        <th class="col-author">제 1저자</th>
-                        <th class="col-category hide-mobile">주제</th>
-                        <th class="col-link">링크</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">Theory of Convex Optimization for Machine learning</td>
-                        <td>Sebastien Bubeck</td>
-                        <td class="hide-mobile"><span class="tag">Convex Optimization</span></td>
-                        <td><a href="https://arxiv.org/abs/1405.4980" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimization for Deep learning: an overview</td>
-                        <td>Ruoyu sun</td>
-                        <td class="hide-mobile"><span class="tag">Convex & Non-Convex</span></td>
-                        <td><a href="https://arxiv.org/abs/1912.08957" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Recent Theoretical Advances in Non-Convex Optimization</td>
-                        <td>Marina Danilova</td>
-                        <td class="hide-mobile"><span class="tag">Non-Convex</span></td>
-                        <td><a href="https://arxiv.org/abs/2012.06188" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimization Methods for Large-Scale Machine Learning</td>
-                        <td>Leon Bottou</td>
-                        <td class="hide-mobile"><span class="tag">Convex & Non-Convex</span></td>
-                        <td><a href="https://arxiv.org/abs/1606.04838" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Handbook of Convergence theorems for (Stochastic) gradient methods</td>
-                        <td>G Gariigos</td>
-                        <td class="hide-mobile"><span class="tag">Convergence Analysis</span></td>
-                        <td><a href="https://arxiv.org/abs/2301.11235" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Federated Learning</td>
-                        <td>-</td>
-                        <td class="hide-mobile"><span class="tag">Federated Learning</span></td>
-                        <td><a href="https://arxiv.org/abs/2107.06917" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Federated Learning</td>
-                        <td>-</td>
-                        <td class="hide-mobile"><span class="tag">Federated Learning</span></td>
-                        <td><a href="https://arxiv.org/abs/1902.01046" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimal Transport</td>
-                        <td>-</td>
-                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
-                        <td><a href="https://optimaltransport.github.io" class="resource-link" target="_blank">GitHub →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Combinatorial Optimization</td>
-                        <td>-</td>
-                        <td class="hide-mobile"><span class="tag">Combinatorial</span></td>
-                        <td><a href="https://github.com/Thinklab-SJTU/awesome-ml4co" class="resource-link" target="_blank">🎯 awesome-ml4co</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Optimal Transport</td>
-                        <td>-</td>
-                        <td class="hide-mobile"><span class="tag">Optimal Transport</span></td>
-                        <td><a href="https://www.bunne.ch/ot_tutorial/" class="resource-link" target="_blank">Tutorial →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Online learning</td>
-                        <td>Francesco Orabona</td>
-                        <td class="hide-mobile"><span class="tag">Online learning</span></td>
-                        <td><a href="https://arxiv.org/abs/1912.13213" class="resource-link" target="_blank">arXiv →</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Learning Theory Page -->
-        <div id="learning-theory-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">🧠 Deep Learning Theory</h2>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">제목</th>
-                        <th class="col-author">주제</th>
-                        <th class="col-link" colspan="2">링크/난이이도</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">Dictionary of Machine learning</td>
-                        <td>Machine learning</td>
-                        <td colspan="2"><a href="https://acris.aalto.fi/ws/portalfiles/portal/178601943/ADictML_English.pdf" class="resource-link" target="_blank">arXiv →</a> 중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">A Survey on Statistical Theory of Deep Learning</td>
-                        <td>Learning theory</td>
-                        <td colspan="2"><a href="https://arxiv.org/abs/2401.07187" class="resource-link" target="_blank">arXiv →</a> 상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Deep Learning Theory Lecture Notes (Matus Telgarsky)</td>
-                        <td>Learning theory</td>
-                        <td colspan="2"><a href="https://mjt.cs.illinois.edu/dlt/" class="resource-link" target="_blank">View →</a> 상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Theoretical Machine Learning (Elad Hazan)</td>
-                        <td>Learning theory</td>
-                        <td colspan="2"><a href="https://sites.google.com/view/cos511fall2024/lectures" class="resource-link" target="_blank">View →</a> 상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Statistics and Information Theory Lecture (John Duchi)</td>
-                        <td>Information theory</td>
-                        <td colspan="2"><a href="https://web.stanford.edu/class/stats311/lecture-notes.pdf" class="resource-link" target="_blank">View →</a> 상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Learning Theory from First Principles (Francis Bach)</td>
-                        <td>Learning theory</td>
-                        <td colspan="2"><a href="https://www.di.ens.fr/~fbach/ltfp_book.pdf" class="resource-link" target="_blank">View →</a> 상~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Alice's Adventures in a Differentiable Wonderland</td>
-                        <td>Deep learning</td>
-                        <td colspan="2"><a href="https://arxiv.org/abs/2404.17625" class="resource-link" target="_blank">arXiv →</a> 중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Understanding Deep Learning</td>
-                        <td>Deep learning</td>
-                        <td colspan="2"><a href="https://udlbook.github.io/udlbook/" class="resource-link" target="_blank">View →</a> 중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Mathematical Foundation of RL</td>
-                        <td>RL</td>
-                        <td colspan="2"><a href="https://discuss.pytorch.kr/t/mathematical-foundation-of-rl/6405" class="resource-link" target="_blank">View →</a> 중~</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Deep Learning: Foundations and Concepts (Bishop & Bishop)</td>
-                        <td>Deep Learning</td>
-                        <td colspan="2"><a href="https://issuu.com/cmb321/docs/deep_learning_ebook" class="resource-link" target="_blank">View →</a> 중</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Foundations of Machine Learning 2nd ed. (Mehryar Mohri, Afshin Rostamizadeh)</td>
-                        <td>Learning Theory</td>
-                        <td colspan="2"><a href="https://cs.nyu.edu/~mohri/mlbook/" class="resource-link" target="_blank">View →</a> 중</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Gradient Flows in Metric Spaces and in the Space of Probability Measures (Luigi Ambrosio)</td>
-                        <td>Gradient Flow</td>
-                        <td colspan="2"><a href="https://link.springer.com/book/10.1007/978-3-7643-8722-8" class="resource-link" target="_blank">View →</a> 상</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Probabilistic Machine Learning (Kevin Patrick Murphy)</td>
-                        <td>Machine Learning</td>
-                        <td colspan="2"><a href="https://probml.github.io/pml-book/" class="resource-link" target="_blank">View →</a> 중</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Mathematics Page -->
-        <div id="mathematics-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">🔢 Undergraduate & Graduate level Mathematics</h2>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">이름</th>
-                        <th class="col-link" colspan="2">URL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">📁 Diffusion에 이르는 길</td>
-                        <td colspan="2"><a href="https://drive.google.com/file/d/1DDQHHDi8E1yx_3ndMrRPuUrYSaiuq5xC/view?usp=drivesdk" class="resource-link" target="_blank">Google Drive →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Understanding Analysis (Stephen Abbott)</td>
-                        <td colspan="2">X</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Principles of Mathematical Analysis (Rudin)</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Real and Complex Analysis (Rudin)</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Linear Algebra Done Right</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">프리드버그 선형대수학</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">선형대수와 군</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">The Matrix Cookbook (Kaare Brandt Petersen)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Matrix Differential Calculus with Applications in Statistics and Econometrics. (Jan R. Magnus)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">A first course in Stochastic Calculus (Louis-Pierre Arguin)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">High-Dimensional Probability (An Introduction with Applications in Data Science), (Roman Vershynin)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Matrix Calculus (for Machine Learning and Beyond) : Based on MIT course 18.063</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Matrices, Moments and Quadrature with Applications (Gene H.Golub)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">해석개론 (김성기, 김도한, 계승혁)</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Probability and Measure (Patrick Billingsley)</td>
-                        <td colspan="2">구글링 후 다운로드 가능.</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Fourier Analysis (Elias M.STEIN & RAMI SHAKARCHI)</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Stochastic Calculus for Finance (Continuous-Time Models, Steven E.Shreve)</td>
-                        <td colspan="2">-</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- ETC Page -->
-        <div id="etc-page" class="resource-page">
-            <button class="back-button" onclick="showMain()">
-                ← Back to Main
-            </button>
-            <div class="page-header">
-                <h2 class="page-title">💡 ETC</h2>
-                <p class="tagline">Resources for being a good researcher</p>
-            </div>
-            <table class="resource-table fade-in">
-                <thead>
-                    <tr>
-                        <th class="col-title">제목</th>
-                        <th class="col-author">저자</th>
-                        <th class="col-category hide-mobile">분류</th>
-                        <th class="col-link">링크</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="resource-title-cell">Problem solving strategies</td>
-                        <td>Tao</td>
-                        <td class="hide-mobile"><span class="tag">Research Skills</span></td>
-                        <td><a href="https://terrytao.wordpress.com/2010/10/21/245a-problem-solving-strategies/" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Career advice</td>
-                        <td>Tao</td>
-                        <td class="hide-mobile"><span class="tag">Research Skills</span></td>
-                        <td><a href="https://terrytao.wordpress.com/career-advice/" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">The craft of research (4th edition)</td>
-                        <td>Wayne C. Booth et al.</td>
-                        <td class="hide-mobile"><span class="tag">Research Skills</span></td>
-                        <td><a href="https://product.kyobobook.co.kr/detail/S000006601607" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">How to Read a Paper</td>
-                        <td>S. Keshav</td>
-                        <td class="hide-mobile"><span class="tag">Research Skills</span></td>
-                        <td><a href="http://ccr.sigcomm.org/online/files/p83-keshavA.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">How to Write a Great Research Paper</td>
-                        <td>Simon Peyton Jones</td>
-                        <td class="hide-mobile"><span class="tag">Writing</span></td>
-                        <td><a href="https://www.microsoft.com/en-us/research/academic-program/write-great-research-paper/" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">The PhD Grind</td>
-                        <td>Philip Guo</td>
-                        <td class="hide-mobile"><span class="tag">PhD Life</span></td>
-                        <td><a href="http://linyun.info/phd-grinding.pdf" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">Advice for Researchers and Students</td>
-                        <td>Michael Ernst</td>
-                        <td class="hide-mobile"><span class="tag">Career Advice</span></td>
-                        <td><a href="https://homes.cs.washington.edu/~mernst/advice/" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                    <tr>
-                        <td class="resource-title-cell">You and Your Research</td>
-                        <td>Richard Hamming</td>
-                        <td class="hide-mobile"><span class="tag">Research Philosophy</span></td>
-                        <td><a href="http://www.cs.virginia.edu/~robins/YouAndYourResearch.html" class="resource-link" target="_blank">View →</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 Optimization Is All You Need. Created with passion for the optimization community.</p>
+    <div class="header-searchbar">
+      <div class="global-search">
+        <input id="global-search-input" class="search-input" type="text"
+               placeholder="전체 검색 (예: matrix functions, AdamW, mirror descent, K-FAC) — '/'로 포커스"
+               autocomplete="off" />
+        <span class="chip" onclick="clearGlobalSearch()" title="검색 초기화">Clear ⨯</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- MAIN -->
+    <section id="main-page" class="fade-in">
+      <div class="category-grid">
+        <div class="category-card" onclick="showCategory('textbook')">
+          <div class="category-top">
+            <div class="category-icon">📚</div>
+            <div class="category-count" data-count-for="textbook">—</div>
+          </div>
+          <div class="category-title">Textbooks & Monographs</div>
+          <div class="category-description">Convex/nonconvex optimization, variational analysis, matrix functions & numerical linear algebra</div>
         </div>
-    </footer>
 
-    <script>
-        // Theme toggle functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update icon
-            const icon = document.querySelector('.theme-icon');
-            icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+        <div class="category-card" onclick="showCategory('lecture')">
+          <div class="category-top">
+            <div class="category-icon">🎓</div>
+            <div class="category-count" data-count-for="lecture">—</div>
+          </div>
+          <div class="category-title">Lectures & Notes</div>
+          <div class="category-description">대학 강의, 공개 노트/슬라이드, 코스 자료</div>
+        </div>
+
+        <div class="category-card" onclick="showCategory('paper')">
+          <div class="category-top">
+            <div class="category-icon">📄</div>
+            <div class="category-count" data-count-for="paper">—</div>
+          </div>
+          <div class="category-title">Papers (Optimization)</div>
+          <div class="category-description">최적화 이론/서베이, 온라인/확률 최적화, 비볼록 최적화, 최적수송 등</div>
+        </div>
+
+        <div class="category-card" onclick="showCategory('optimizer')">
+          <div class="category-top">
+            <div class="category-icon">⚙️</div>
+            <div class="category-count" data-count-for="optimizer">—</div>
+          </div>
+          <div class="category-title">Optimizer Zoo (Deep Learning)</div>
+          <div class="category-description">AdaGrad/AdamW/AMSGrad/LAMB/Shampoo/K-FAC/SAM/Lion… + 분석 논문</div>
+        </div>
+
+        <div class="category-card" onclick="showCategory('learning-theory')">
+          <div class="category-top">
+            <div class="category-icon">🧠</div>
+            <div class="category-count" data-count-for="learning-theory">—</div>
+          </div>
+          <div class="category-title">Learning Theory</div>
+          <div class="category-description">통계적/이론적 머신러닝, 일반화/표현/최적화 연결 고리</div>
+        </div>
+
+        <div class="category-card" onclick="showCategory('mathematics')">
+          <div class="category-top">
+            <div class="category-icon">🔢</div>
+            <div class="category-count" data-count-for="mathematics">—</div>
+          </div>
+          <div class="category-title">Math Foundations</div>
+          <div class="category-description">선형대수/해석학/확률론/행렬미적분 등 — 최적화의 기반</div>
+        </div>
+
+        <div class="category-card" onclick="showCategory('etc')">
+          <div class="category-top">
+            <div class="category-icon">💡</div>
+            <div class="category-count" data-count-for="etc">—</div>
+          </div>
+          <div class="category-title">ETC</div>
+          <div class="category-description">리서치 스킬(읽기/쓰기/커리어), 생산성, 학계 생활</div>
+        </div>
+      </div>
+
+      <div id="global-search-results" class="global-results">
+        <div class="results-header">
+          <div class="results-title">Search results</div>
+          <div class="muted" id="global-search-count"></div>
+        </div>
+        <div id="global-search-list" class="results-list"></div>
+      </div>
+    </section>
+
+    <!-- TEXTBOOK -->
+    <section id="textbook-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">📚 Textbooks & Monographs</div>
+        <div class="page-subtitle">최적화 이론 + 수치선형대수(행렬함수 포함)까지 한 번에</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="textbook-search" class="select" type="text" placeholder="Search (title / authors / tags / notes) ..." autocomplete="off" />
+          <select id="textbook-tag" class="select"></select>
+          <select id="textbook-sort" class="select"></select>
+          <div id="textbook-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="textbook-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LECTURE -->
+    <section id="lecture-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">🎓 Lectures & Notes</div>
+        <div class="page-subtitle">검증된 코스 페이지/슬라이드/노트 위주로 정리</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="lecture-search" class="select" type="text" placeholder="Search (title / instructor / tags) ..." autocomplete="off" />
+          <select id="lecture-tag" class="select"></select>
+          <select id="lecture-sort" class="select"></select>
+          <div id="lecture-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="lecture-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Course / Resource</th>
+              <th class="col-author">Instructor / Owner</th>
+              <th class="col-year hide-mobile">Level</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PAPER -->
+    <section id="paper-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">📄 Papers (Optimization)</div>
+        <div class="page-subtitle">서베이/이론/응용 — 최적화 연구의 큰 지도</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="paper-search" class="select" type="text" placeholder="Search (title / authors / venue / tags) ..." autocomplete="off" />
+          <select id="paper-tag" class="select"></select>
+          <select id="paper-sort" class="select"></select>
+          <div id="paper-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="paper-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- OPTIMIZER -->
+    <section id="optimizer-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">⚙️ Optimizer Zoo (Deep Learning)</div>
+        <div class="page-subtitle">대표 옵티마이저 논문 + 수렴/일반화 분석 (태그/검색/정렬 지원)</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="optimizer-search" class="select" type="text" placeholder="Search (AdamW / Shampoo / SAM / …) ..." autocomplete="off" />
+          <select id="optimizer-tag" class="select"></select>
+          <select id="optimizer-sort" class="select"></select>
+          <div id="optimizer-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="optimizer-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LEARNING THEORY -->
+    <section id="learning-theory-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">🧠 Learning Theory</div>
+        <div class="page-subtitle">최적화와 학습이 만나는 지점 (일반화/표현/통계)</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="learning-theory-search" class="select" type="text" placeholder="Search ..." autocomplete="off" />
+          <select id="learning-theory-tag" class="select"></select>
+          <select id="learning-theory-sort" class="select"></select>
+          <div id="learning-theory-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="learning-theory-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MATHEMATICS -->
+    <section id="mathematics-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">🔢 Math Foundations</div>
+        <div class="page-subtitle">선형대수/확률/해석/행렬미적분/고차원확률 — 연구 필수 배경지식</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="mathematics-search" class="select" type="text" placeholder="Search ..." autocomplete="off" />
+          <select id="mathematics-tag" class="select"></select>
+          <select id="mathematics-sort" class="select"></select>
+          <div id="mathematics-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="mathematics-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ETC -->
+    <section id="etc-page" class="resource-page">
+      <button class="back-button" onclick="showMain()">← Back</button>
+      <div class="page-header">
+        <div class="page-title">💡 ETC</div>
+        <div class="page-subtitle">좋은 연구자가 되기 위한 글/강의/가이드</div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <input id="etc-search" class="select" type="text" placeholder="Search ..." autocomplete="off" />
+          <select id="etc-tag" class="select"></select>
+          <select id="etc-sort" class="select"></select>
+          <div id="etc-count" class="count"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="etc-table" class="resource-table">
+          <thead>
+            <tr>
+              <th class="col-title">Title</th>
+              <th class="col-author">Author(s)</th>
+              <th class="col-year hide-mobile">Year</th>
+              <th class="col-tags hide-mobile">Tags</th>
+              <th class="col-link">Links</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© 2026 Optimization Is All You Need — curated &amp; maintained for the optimization community.</div>
+  </footer>
+
+  <!-- DETAIL MODAL -->
+  <div id="detail-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <div class="modal-header">
+        <div>
+          <div id="modal-title" class="modal-title">Title</div>
+          <div id="modal-subtitle" class="muted"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">Close ⨯</button>
+      </div>
+      <div class="modal-body">
+        <div class="kv">
+          <div class="k">Authors</div>
+          <div id="modal-authors" class="v">—</div>
+        </div>
+        <div class="kv">
+          <div class="k">Year / Level</div>
+          <div id="modal-year" class="v">—</div>
+        </div>
+        <div class="kv">
+          <div class="k">Tags</div>
+          <div id="modal-tags" class="v">—</div>
+        </div>
+        <div class="kv">
+          <div class="k">Notes</div>
+          <div id="modal-notes" class="v">—</div>
+        </div>
+        <div class="kv" style="grid-column: 1 / -1;">
+          <div class="k">Links</div>
+          <div id="modal-links" class="modal-links"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*******************************************************************
+     * Data
+     *******************************************************************/
+    const CATEGORY_LABELS = {
+      "textbook": "Textbooks",
+      "lecture": "Lectures",
+      "paper": "Papers",
+      "optimizer": "Optimizers",
+      "learning-theory": "Learning Theory",
+      "mathematics": "Mathematics",
+      "etc": "ETC"
+    };
+
+    const DATA = {
+      "textbook": [
+        {
+          title: "Convex Optimization",
+          authors: "Stephen Boyd, Lieven Vandenberghe",
+          year: 2004,
+          tags: ["Convex", "Duality", "Free PDF"],
+          notes: "클래식. 최적화/듀얼리티/내부점 방법까지.",
+          links: [{ label: "PDF", url: "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf" }]
+        },
+        {
+          title: "Introductory Lectures on Convex Optimization: A Basic Course",
+          authors: "Yurii Nesterov",
+          year: 2004,
+          tags: ["Convex", "Complexity", "Book"],
+          notes: "가속도/복잡도 관점의 표준 레퍼런스.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-1-4419-8853-9" }]
+        },
+        {
+          title: "Lectures on Convex Optimization (2nd ed.)",
+          authors: "Yurii Nesterov",
+          year: 2018,
+          tags: ["Convex", "Advanced", "Book"],
+          notes: "스무딩/내부점/복잡도까지 더 현대적으로 정리.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-3-319-91578-4" }]
+        },
+        {
+          title: "Lectures on Modern Convex Optimization",
+          authors: "Aharon Ben-Tal, Arkadi Nemirovski",
+          year: 2001,
+          tags: ["Conic", "SDP", "Robust", "Book"],
+          notes: "구조적(convex) 문제(특히 conic/SDP/robust) 중심.",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9780898718829" }]
+        },
+        {
+          title: "First-Order Methods in Optimization",
+          authors: "Amir Beck",
+          year: 2017,
+          tags: ["First-order", "Proximal", "ADMM", "Book"],
+          notes: "프록시멀/가속/분해/ADMM까지 한 권에.",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9781611974997" }]
+        },
+        {
+          title: "Numerical Optimization",
+          authors: "Jorge Nocedal, Stephen J. Wright",
+          year: 2006,
+          tags: ["Numerical", "Quasi-Newton", "Trust-region", "Book"],
+          notes: "연속 최적화 알고리즘(실무+이론) 대표 교과서.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-0-387-40065-5" }]
+        },
+        {
+          title: "Nonlinear Programming (3rd ed.)",
+          authors: "Dimitri P. Bertsekas",
+          year: 2016,
+          tags: ["Nonlinear", "KKT", "Duality", "Book"],
+          notes: "라그랑주/제약/비선형 최적화의 깊은 정리.",
+          links: [{ label: "Athena", url: "https://www.athenasc.com/nonlinbook.html" }]
+        },
+        {
+          title: "Introduction to Linear Optimization",
+          authors: "Dimitris Bertsimas, John N. Tsitsiklis",
+          year: 1997,
+          tags: ["LP", "Network flow", "Discrete", "Book"],
+          notes: "LP/네트워크/정수 최적화 입문을 깔끔하게.",
+          links: [{ label: "Athena", url: "https://athenasc.com/linoptbook.html" }]
+        },
+        {
+          title: "Convex Optimization: Algorithms and Complexity",
+          authors: "Sébastien Bubeck",
+          year: 2014,
+          tags: ["Convex", "Complexity", "Free PDF"],
+          notes: "블랙박스 모델/복잡도 정리와 알고리즘 요약.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1405.4980" }]
+        },
+        {
+          title: "Introduction to Online Convex Optimization",
+          authors: "Elad Hazan",
+          year: 2019,
+          tags: ["OCO", "Regret", "Bandits", "Free PDF"],
+          notes: "OCO를 '프로세스'로 보는 관점의 필독 노트.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1909.05207" }]
+        },
+        {
+          title: "A Modern Introduction to Online Learning",
+          authors: "Francesco Orabona",
+          year: 2019,
+          tags: ["Online", "Parameter-free", "Free PDF"],
+          notes: "파라미터-프리, 적응적 온라인 학습 관점.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1912.13213" }]
+        },
+        {
+          title: "Online Learning and Online Convex Optimization",
+          authors: "Shai Shalev-Shwartz",
+          year: 2012,
+          tags: ["OCO", "Regret", "Monograph"],
+          notes: "Now Publishers 모노그래프(정리 중심).",
+          links: [{ label: "Now", url: "https://www.nowpublishers.com/article/Details/MAL-018" }]
+        },
+        {
+          title: "Convex Analysis and Monotone Operator Theory in Hilbert Spaces (2nd ed.)",
+          authors: "Heinz H. Bauschke, Patrick L. Combettes",
+          year: 2017,
+          tags: ["Convex", "Monotone", "Proximal", "Book"],
+          notes: "모노톤 연산자/고정점/프록시멀 알고리즘의 큰 뼈대.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-3-319-48311-5" }]
+        },
+        {
+          title: "Variational Analysis",
+          authors: "R. Tyrrell Rockafellar, Roger J.-B. Wets",
+          year: 1998,
+          tags: ["Variational", "Subdifferential", "Book"],
+          notes: "서브미분/에피수렴/모노톤 등 최적화의 언어.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-3-642-02431-3" }]
+        },
+        {
+          title: "Convex Optimization Theory (free draft)",
+          authors: "Dimitri P. Bertsekas",
+          year: 2019,
+          tags: ["Convex", "Duality", "Free PDF"],
+          notes: "Bertsekas가 공개한 Convex theory PDF (정리+직관).",
+          links: [{ label: "PDF", url: "https://web.mit.edu/dimitrib/www/Convex_Theory_Entire_Book.pdf" }]
+        },
+        {
+          title: "Shampoo: Preconditioned Stochastic Tensor Optimization",
+          authors: "Vineet Gupta, Tomer Koren, Yoram Singer",
+          year: 2018,
+          tags: ["Second-order-ish", "Preconditioning", "Free PDF"],
+          notes: "텐서 구조를 이용한 preconditioner(이론 포함).",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1802.09568" }]
+        },
+        {
+          title: "Matrix Analysis (2nd ed.)",
+          authors: "Roger A. Horn, Charles R. Johnson",
+          year: 2012,
+          tags: ["Matrix", "Inequalities", "Book"],
+          notes: "행렬 부등식/스펙트럼/정규형까지. 필수 레퍼런스.",
+          links: [{ label: "Cambridge", url: "https://www.cambridge.org/cv/universitypress/subjects/mathematics/algebra/matrix-analysis-2nd-edition" }]
+        },
+        {
+          title: "Topics in Matrix Analysis",
+          authors: "Roger A. Horn, Charles R. Johnson",
+          year: 1991,
+          tags: ["Matrix", "Advanced", "Book"],
+          notes: "Matrix Analysis 후속. 더 깊은 토픽들.",
+          links: [{ label: "Cambridge", url: "https://www.cambridge.org/core/books/topics-in-matrix-analysis/B988495A235F1C3406EA484A2C477B03" }]
+        },
+        {
+          title: "Matrix Analysis",
+          authors: "Rajendra Bhatia",
+          year: 1997,
+          tags: ["Matrix", "Operator", "Book"],
+          notes: "Functional-analytic 스타일의 matrix inequalities 정리.",
+          links: [{ label: "Springer", url: "https://link.springer.com/book/10.1007/978-1-4612-0653-8" }]
+        },
+        {
+          title: "Functions of Matrices: Theory and Computation",
+          authors: "Nicholas J. Higham",
+          year: 2008,
+          tags: ["Matrix Functions", "Numerical", "Book"],
+          notes: "행렬함수의 사실상 표준 교과서(SIAM).",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9780898717778" }]
+        },
+        {
+          title: "Matrix Computations (4th ed.)",
+          authors: "Gene H. Golub, Charles F. Van Loan",
+          year: 2013,
+          tags: ["Numerical LA", "Matrix", "Book"],
+          notes: "수치선형대수의 바이블(분해/해법/행렬함수).",
+          links: [{ label: "JHU Press", url: "https://www.press.jhu.edu/books/title/10678/matrix-computations" }]
+        },
+        {
+          title: "Numerical Linear Algebra",
+          authors: "Lloyd N. Trefethen, David Bau III",
+          year: 1997,
+          tags: ["Numerical LA", "Book"],
+          notes: "짧고 밀도 높은 수치선형대수 교과서(SIAM).",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9780898719574" }]
+        },
+        {
+          title: "Accuracy and Stability of Numerical Algorithms (2nd ed.)",
+          authors: "Nicholas J. Higham",
+          year: 2002,
+          tags: ["Numerical", "Floating point", "Book"],
+          notes: "수치 오차/안정성의 기본기(특히 선형대수).",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/book/10.1137/1.9780898718027" }]
+        },
+        {
+          title: "Bandit Algorithms",
+          authors: "Tor Lattimore, Csaba Szepesvári",
+          year: 2020,
+          tags: ["Bandits", "Free PDF"],
+          notes: "밴딧의 거의 모든 것(무료 PDF 제공).",
+          links: [{ label: "PDF", url: "https://tor-lattimore.com/downloads/book/book.pdf" }]
+        },
+        {
+          title: "Algorithms for Optimization",
+          authors: "Mykel J. Kochenderfer, Tim A. Wheeler",
+          year: 2019,
+          tags: ["General", "Free PDF"],
+          notes: "광범위한 최적화 알고리즘을 실전 관점으로.",
+          links: [{ label: "PDF", url: "https://algorithmsbook.com/optimization/files/optimization.pdf" }]
+        },
+        {
+          title: "Large Scale Convex Optimization",
+          authors: "Kyungseok Ryu",
+          year: 2023,
+          tags: ["Large-scale", "Free", "Book"],
+          notes: "대규모 최적화 실전/이론(웹 기반).",
+          links: [{ label: "Site", url: "https://large-scale-book.mathopt.com" }]
+        },
+        {
+          title: "Perturbations, Optimization, and Statistics",
+          authors: "Tamir Hazan, George Papandreou, Daniel Tarlow (eds.)",
+          year: 2016,
+          tags: ["Optimization", "Statistics", "Book"],
+          notes: "Perturbation 관점(예: Gumbel)과 최적화/통계 연결.",
+          links: [{ label: "MIT Press", url: "https://mitpress.mit.edu/9780262549943/perturbations-optimization-and-statistics/" }]
         }
+      ],
 
-        // Load saved theme preference or default to dark
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            
-            // Set initial icon
-            const icon = document.querySelector('.theme-icon');
-            icon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-            
-            // Add hover effect to table rows
-            const tableRows = document.querySelectorAll('.resource-table tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateX(4px)';
-                });
-                row.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateX(0)';
-                });
-            });
+      "lecture": [
+        {
+          title: "EE364a: Convex Optimization I",
+          authors: "Stephen Boyd (Stanford)",
+          year: "상~",
+          tags: ["Convex", "Course", "Stanford"],
+          notes: "코스 페이지(과제/자료). SEE/영상도 함께 참고 가능.",
+          links: [
+            { label: "Course", url: "https://ee364a.stanford.edu/" },
+            { label: "SEE", url: "https://see.stanford.edu/Course/EE364A" }
+          ]
+        },
+        {
+          title: "EE364b: Convex Optimization II",
+          authors: "Stephen Boyd (Stanford)",
+          year: "상~",
+          tags: ["Convex", "Course", "Stanford"],
+          notes: "decomposition/robust/relaxation 등 응용 중심.",
+          links: [
+            { label: "Course", url: "https://stanford.edu/class/ee364b/" },
+            { label: "Slides", url: "https://stanford.edu/class/ee364b/lectures.html" }
+          ]
+        },
+        {
+          title: "CMU 10-725 Convex Optimization",
+          authors: "Sivaraman Balakrishnan (CMU)",
+          year: "상",
+          tags: ["Convex", "ML", "CMU"],
+          notes: "통계/ML 관점에서 convex optimization을 탄탄하게.",
+          links: [{ label: "Course", url: "https://www.stat.cmu.edu/~siva/teaching/725/" }]
+        },
+        {
+          title: "CMU 10-725 Convex Optimization (Fall 2019)",
+          authors: "Ryan Tibshirani (CMU)",
+          year: "상",
+          tags: ["Convex", "ML", "CMU"],
+          notes: "코스 버전별로 노트/과제 구성 차이 있음.",
+          links: [{ label: "Course", url: "https://www.stat.cmu.edu/~ryantibs/convexopt/" }]
+        },
+        {
+          title: "Optimization for Machine Learning (Slides)",
+          authors: "Mark Schmidt (UBC)",
+          year: "중~상",
+          tags: ["Optimization", "ML", "Slides"],
+          notes: "정리/수렴률/가속 등 핵심을 빠르게 훑기 좋음.",
+          links: [{ label: "PDF", url: "https://www.cs.ubc.ca/~schmidtm/Documents/2015_406_OptML.pdf" }]
+        },
+        {
+          title: "CPSC 5XX: Numerical Optimization for Machine Learning",
+          authors: "Mark Schmidt (UBC)",
+          year: "상",
+          tags: ["Optimization", "ML", "Course"],
+          notes: "최신 강의(슬라이드/노트).",
+          links: [{ label: "Course", url: "https://www.cs.ubc.ca/~schmidtm/Courses/5XX-S22/" }]
+        },
+        {
+          title: "100+ Lectures on Machine Learning",
+          authors: "Mark Schmidt (UBC)",
+          year: "중~상",
+          tags: ["ML", "Notes"],
+          notes: "최적화 관련 챕터/슬라이드가 풍부.",
+          links: [{ label: "Site", url: "https://www.cs.ubc.ca/~schmidtm/Courses/LecturesOnML/" }]
+        },
+        {
+          title: "CS231n Lecture 6 (Optimization, 2016 slides)",
+          authors: "Stanford CS231n",
+          year: "중",
+          tags: ["Deep Learning", "SGD", "Slides"],
+          notes: "DL 옵티마이저 개괄(가볍게 복습용).",
+          links: [{ label: "PDF", url: "https://cs231n.stanford.edu/slides/2016/winter1516_lecture6.pdf" }]
+        },
+        {
+          title: "MIT OCW: Matrix Calculus for Machine Learning and Beyond (Full notes)",
+          authors: "Alan Edelman, Steven G. Johnson (MIT)",
+          year: "중~상",
+          tags: ["Matrix Calculus", "AD", "OCW"],
+          notes: "행렬미분/AD/최적화 연결을 매우 잘 정리.",
+          links: [{ label: "PDF", url: "https://ocw.mit.edu/courses/18-s096-matrix-calculus-for-machine-learning-and-beyond-january-iap-2023/mit18_s096iap23_lec_full.pdf" }]
+        }
+      ],
+
+      "paper": [
+        {
+          title: "Theory of Convex Optimization for Machine Learning",
+          authors: "Sébastien Bubeck",
+          year: 2014,
+          tags: ["Survey", "Convex", "ML"],
+          notes: "convex optimization을 ML 관점으로 정리한 노트.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1405.4980" }]
+        },
+        {
+          title: "Optimization for Deep Learning: An Overview",
+          authors: "Ruoyu Sun",
+          year: 2019,
+          tags: ["Survey", "Nonconvex", "Deep Learning"],
+          notes: "비볼록 최적화 시각으로 DL 학습을 정리.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1912.08957" }]
+        },
+        {
+          title: "Optimization Methods for Large-Scale Machine Learning",
+          authors: "Léon Bottou, Frank E. Curtis, Jorge Nocedal",
+          year: 2018,
+          tags: ["Survey", "SGD", "Large-scale"],
+          notes: "실무 관점의 대규모 최적화 개론(매우 인용 많음).",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1606.04838" }]
+        },
+        {
+          title: "Recent Theoretical Advances in Non-Convex Optimization",
+          authors: "Marina Danilova, et al.",
+          year: 2020,
+          tags: ["Survey", "Nonconvex"],
+          notes: "비볼록 최적화 이론 발전 정리.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2012.06188" }]
+        },
+        {
+          title: "Handbook of Convergence Theorems for (Stochastic) Gradient Methods",
+          authors: "G. G. (Garrigos), et al.",
+          year: 2023,
+          tags: ["Survey", "Convergence", "Stochastic"],
+          notes: "SGD 류 수렴 정리/가정/레퍼런스 모음.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2301.11235" }]
+        },
+        {
+          title: "Conditional Gradient Methods (A Modern View)",
+          authors: "G. Braun, et al.",
+          year: 2022,
+          tags: ["Frank-Wolfe", "Projection-free", "Survey"],
+          notes: "Frank-Wolfe/conditional gradient 총정리.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2211.14103" }]
+        },
+        {
+          title: "The Marginal Value of Adaptive Gradient Methods in Machine Learning",
+          authors: "Ashia C. Wilson, Rebecca Roelofs, Mitchell Stern, Nathan Srebro, Benjamin Recht",
+          year: 2017,
+          tags: ["Adaptive", "Generalization", "Theory"],
+          notes: "적응형 옵티마이저의 일반화 이슈를 날카롭게 분석.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1705.08292" }]
+        },
+        {
+          title: "Nineteen Dubious Ways to Compute the Exponential of a Matrix, Twenty-Five Years Later",
+          authors: "Cleve Moler, Charles F. Van Loan",
+          year: 2003,
+          tags: ["Matrix Functions", "Numerical LA"],
+          notes: "행렬 지수함수 계산의 고전 리뷰(SIAM Review).",
+          links: [{ label: "PDF", url: "https://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Moler03.pdf" }]
+        },
+        {
+          title: "Optimizing Neural Networks with Kronecker-factored Approximate Curvature (K-FAC)",
+          authors: "James Martens, Roger Grosse",
+          year: 2015,
+          tags: ["Second-order", "Natural gradient", "Preconditioning"],
+          notes: "자연 그래디언트 근사(K-FAC) 원조 논문.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1503.05671" }]
+        },
+        {
+          title: "A Survey on Statistical Theory of Deep Learning",
+          authors: "—",
+          year: 2024,
+          tags: ["Survey", "Deep Learning", "Statistics"],
+          notes: "통계적 관점의 DL 이론 최신 서베이.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2401.07187" }]
+        }
+      ],
+
+      "optimizer": [
+        {
+          title: "Adaptive Subgradient Methods for Online Learning and Stochastic Optimization (AdaGrad)",
+          authors: "John Duchi, Elad Hazan, Yoram Singer",
+          year: 2011,
+          tags: ["AdaGrad", "Adaptive", "OCO"],
+          notes: "AdaGrad 원전(JMLR).",
+          links: [{ label: "JMLR PDF", url: "https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf" }]
+        },
+        {
+          title: "ADADELTA: An Adaptive Learning Rate Method",
+          authors: "Matthew D. Zeiler",
+          year: 2012,
+          tags: ["AdaDelta", "Adaptive"],
+          notes: "학습률 튜닝 부담을 줄이는 적응형 방법.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1212.5701" }]
+        },
+        {
+          title: "Adam: A Method for Stochastic Optimization",
+          authors: "Diederik P. Kingma, Jimmy Ba",
+          year: 2015,
+          tags: ["Adam", "Adaptive", "Momentum"],
+          notes: "사실상 표준 옵티마이저 중 하나.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1412.6980" }]
+        },
+        {
+          title: "Decoupled Weight Decay Regularization (AdamW/SGDW)",
+          authors: "Ilya Loshchilov, Frank Hutter",
+          year: 2017,
+          tags: ["AdamW", "Regularization", "Generalization"],
+          notes: "weight decay를 L2와 분리(AdamW).",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1711.05101" }]
+        },
+        {
+          title: "On the Convergence of Adam and Beyond (AMSGrad)",
+          authors: "Sashank J. Reddi, Satyen Kale, Sanjiv Kumar",
+          year: 2019,
+          tags: ["AMSGrad", "Adam", "Theory"],
+          notes: "Adam 비수렴 예시 + AMSGrad 제안.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1904.09237" }]
+        },
+        {
+          title: "Adaptive Gradient Methods with Dynamic Bound of Learning Rate (AdaBound)",
+          authors: "Liangchen Luo, Yuanhao Xiong, Yan Liu, Xu Sun",
+          year: 2019,
+          tags: ["AdaBound", "Adam", "Generalization"],
+          notes: "Adam→SGD로 자연스럽게 전환하는 bound 아이디어.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1902.09843" }]
+        },
+        {
+          title: "On the Variance of the Adaptive Learning Rate and Beyond (RAdam)",
+          authors: "Liyuan Liu, Haoming Jiang, Pengcheng He, Weizhu Chen, Xiaodong Liu, Jianfeng Gao, Jiawei Han",
+          year: 2019,
+          tags: ["RAdam", "Warmup", "Adaptive"],
+          notes: "warmup을 분산 감소로 해석 + rectification.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1908.03265" }]
+        },
+        {
+          title: "Adafactor: Adaptive Learning Rates with Sublinear Memory Cost",
+          authors: "Noam Shazeer, Mitchell Stern",
+          year: 2018,
+          tags: ["Adafactor", "Memory", "Adaptive"],
+          notes: "행렬을 row/col factor로 근사하여 메모리 절감.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1804.04235" }]
+        },
+        {
+          title: "Large Batch Training of Convolutional Networks (LARS)",
+          authors: "Yang You, Igor Gitman, Boris Ginsburg",
+          year: 2017,
+          tags: ["LARS", "Large-batch", "Scaling"],
+          notes: "layer-wise adaptive rate scaling.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1708.03888" }]
+        },
+        {
+          title: "Large Batch Optimization for Deep Learning: Training BERT in 76 minutes (LAMB)",
+          authors: "Yang You, Jing Li, Sashank Reddi, et al.",
+          year: 2019,
+          tags: ["LAMB", "Large-batch", "BERT"],
+          notes: "BERT 대배치 학습을 위한 layer-wise adaptive.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1904.00962" }]
+        },
+        {
+          title: "Shampoo: Preconditioned Stochastic Tensor Optimization",
+          authors: "Vineet Gupta, Tomer Koren, Yoram Singer",
+          year: 2018,
+          tags: ["Shampoo", "Preconditioning", "Second-order-ish"],
+          notes: "텐서 축별 preconditioner(이론 포함).",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1802.09568" }]
+        },
+        {
+          title: "Optimizing Neural Networks with Kronecker-factored Approximate Curvature (K-FAC)",
+          authors: "James Martens, Roger Grosse",
+          year: 2015,
+          tags: ["K-FAC", "Natural gradient", "Second-order-ish"],
+          notes: "Fisher를 Kronecker 구조로 근사.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1503.05671" }]
+        },
+        {
+          title: "Lookahead Optimizer: k steps forward, 1 step back",
+          authors: "Michael R. Zhang, James Lucas, Geoffrey Hinton, Jimmy Ba",
+          year: 2019,
+          tags: ["Lookahead", "Meta-optimizer"],
+          notes: "내부 옵티마이저 위에 얹는 안정화/성능 개선.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1907.08610" }]
+        },
+        {
+          title: "Sharpness-Aware Minimization for Efficiently Improving Generalization (SAM)",
+          authors: "Pierre Foret, Ariel Kleiner, Hossein Mobahi, Behnam Neyshabur",
+          year: 2020,
+          tags: ["SAM", "Generalization", "Min-max"],
+          notes: "loss sharpness를 줄이는 min-max 업데이트.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2010.01412" }]
+        },
+        {
+          title: "Adan: Adaptive Nesterov Momentum Algorithm for Faster Optimizing Deep Models",
+          authors: "Xingyu Xie, Pan Zhou, Huan Li, Zhouchen Lin, Shuicheng Yan",
+          year: 2022,
+          tags: ["Adan", "Adaptive", "Momentum"],
+          notes: "Nesterov 모멘텀 재구성 + 적응형 모멘트 추정.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2208.06677" }]
+        },
+        {
+          title: "Symbolic Discovery of Optimization Algorithms (Lion)",
+          authors: "Xiangning Chen, Chen Liang, Da Huang, et al.",
+          year: 2023,
+          tags: ["Lion", "Sign", "Memory"],
+          notes: "프로그램 탐색으로 발견된 sign 기반 옵티마이저.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2302.06675" }]
+        },
+        {
+          title: "The Marginal Value of Adaptive Gradient Methods in Machine Learning",
+          authors: "Ashia C. Wilson, Rebecca Roelofs, Mitchell Stern, Nathan Srebro, Benjamin Recht",
+          year: 2017,
+          tags: ["Adaptive", "Generalization", "Theory"],
+          notes: "adaptive methods의 해와 일반화의 차이를 분석.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/1705.08292" }]
+        },
+        {
+          title: "On Empirical Comparisons of Optimizers for Deep Learning",
+          authors: "Dami Choi, et al.",
+          year: 2019,
+          tags: ["Benchmark", "Tuning", "Empirical"],
+          notes: "대규모 튜닝/비교 실험(주의점 포함).",
+          links: [{ label: "PDF", url: "https://arxiv.org/pdf/1910.05446" }]
+        },
+        {
+          title: "Incorporating Nesterov Momentum into Adam (Nadam)",
+          authors: "Timothy Dozat",
+          year: 2016,
+          tags: ["Nadam", "Adam", "Momentum"],
+          notes: "Adam에 Nesterov 모멘텀을 결합(워크숍).",
+          links: [{ label: "PDF", url: "https://openreview.net/pdf/OM0jvwB8jIp57ZJjtNEZ.pdf" }]
+        }
+      ],
+
+      "learning-theory": [
+        {
+          title: "Understanding Machine Learning: From Theory to Algorithms",
+          authors: "Shai Shalev-Shwartz, Shai Ben-David",
+          year: 2014,
+          tags: ["Learning Theory", "Free PDF"],
+          notes: "이론 ML 교과서(무료 PDF).",
+          links: [{ label: "PDF", url: "https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/understanding-machine-learning-theory-algorithms.pdf" }]
+        },
+        {
+          title: "Foundations of Machine Learning (2nd ed.)",
+          authors: "Mehryar Mohri, Afshin Rostamizadeh, Ameet Talwalkar",
+          year: 2018,
+          tags: ["Learning Theory", "Book"],
+          notes: "일반화/VC/Rademacher 등 기본기.",
+          links: [{ label: "Site", url: "https://cs.nyu.edu/~mohri/mlbook/" }]
+        },
+        {
+          title: "Learning Theory from First Principles",
+          authors: "Francis Bach",
+          year: 2024,
+          tags: ["Learning Theory", "Free PDF"],
+          notes: "최신 스타일의 이론서(저자 PDF 제공).",
+          links: [{ label: "PDF", url: "https://www.di.ens.fr/~fbach/ltfp_book.pdf" }]
+        },
+        {
+          title: "Deep Learning Theory Lecture Notes",
+          authors: "Matus Telgarsky",
+          year: 2020,
+          tags: ["Deep Learning", "Theory", "Notes"],
+          notes: "표현/일반화/최적화 연결 노트.",
+          links: [{ label: "Site", url: "https://mjt.cs.illinois.edu/dlt/" }]
+        },
+        {
+          title: "Understanding Deep Learning",
+          authors: "Simon J.D. Prince",
+          year: 2023,
+          tags: ["Deep Learning", "Book", "Free"],
+          notes: "딥러닝의 수학적 개념을 큰 흐름으로 정리.",
+          links: [{ label: "Site", url: "https://udlbook.github.io/udlbook/" }]
+        }
+      ],
+
+      "mathematics": [
+        {
+          title: "The Matrix Cookbook (v2012)",
+          authors: "Kaare Brandt Petersen, Michael Syskind Pedersen",
+          year: 2012,
+          tags: ["Matrix", "Reference", "Free PDF"],
+          notes: "행렬 항등식/미분/근사 '치트시트'.",
+          links: [{ label: "PDF", url: "https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf" }]
+        },
+        {
+          title: "Matrix Calculus for Machine Learning and Beyond (MIT OCW)",
+          authors: "Paige Bright, Alan Edelman, Steven G. Johnson",
+          year: 2023,
+          tags: ["Matrix Calculus", "AD", "Free PDF"],
+          notes: "행렬미분/AD를 '정확히' 잡아주는 노트.",
+          links: [{ label: "PDF", url: "https://ocw.mit.edu/courses/18-s096-matrix-calculus-for-machine-learning-and-beyond-january-iap-2023/mit18_s096iap23_lec_full.pdf" }]
+        },
+        {
+          title: "High-Dimensional Probability (draft 2nd ed.)",
+          authors: "Roman Vershynin",
+          year: 2025,
+          tags: ["Probability", "High-dimensional", "Free PDF"],
+          notes: "고차원 확률의 표준 텍스트(초안 무료).",
+          links: [{ label: "PDF", url: "https://www.math.uci.edu/~rvershyn/papers/HDP-book/HDP-2.pdf" }]
+        },
+        {
+          title: "Matrix Differential Calculus with Applications in Statistics and Econometrics (3rd ed.)",
+          authors: "Jan R. Magnus, Heinz Neudecker",
+          year: 2019,
+          tags: ["Matrix Calculus", "Statistics", "Book"],
+          notes: "행렬 미분의 고전(출판/Wiley).",
+          links: [{ label: "Wiley", url: "https://onlinelibrary.wiley.com/doi/book/10.1002/9781119541219" }]
+        },
+        {
+          title: "Numerical Linear Algebra",
+          authors: "Lloyd N. Trefethen, David Bau III",
+          year: 1997,
+          tags: ["Numerical LA", "Book"],
+          notes: "짧지만 강력한 수치선형대수 입문.",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9780898719574" }]
+        },
+        {
+          title: "Functions of Matrices: Theory and Computation",
+          authors: "Nicholas J. Higham",
+          year: 2008,
+          tags: ["Matrix Functions", "Book"],
+          notes: "행렬함수(루트/지수/로그) 계산/이론의 표준.",
+          links: [{ label: "SIAM", url: "https://epubs.siam.org/doi/10.1137/1.9780898717778" }]
+        }
+      ],
+
+      "etc": [
+        {
+          title: "How to Read a Paper",
+          authors: "S. Keshav",
+          year: 2007,
+          tags: ["Reading", "Research Skills", "Free PDF"],
+          notes: "논문 읽기의 고전(3-pass).",
+          links: [{ label: "PDF", url: "http://ccr.sigcomm.org/online/files/p83-keshavA.pdf" }]
+        },
+        {
+          title: "How to Write a Great Research Paper",
+          authors: "Simon Peyton Jones",
+          year: 2016,
+          tags: ["Writing", "Research Skills"],
+          notes: "짧고 강력한 글쓰기 조언.",
+          links: [{ label: "MSR", url: "https://www.microsoft.com/en-us/research/academic-program/write-great-research-paper/" }]
+        },
+        {
+          title: "You and Your Research",
+          authors: "Richard Hamming",
+          year: 1986,
+          tags: ["Research Philosophy", "Talk"],
+          notes: "연구자로 성장하기 위한 태도/전략.",
+          links: [{ label: "Text", url: "http://www.cs.virginia.edu/~robins/YouAndYourResearch.html" }]
+        },
+        {
+          title: "Advice for Researchers and Students",
+          authors: "Michael Ernst",
+          year: 2024,
+          tags: ["Career", "Research Skills"],
+          notes: "실전 연구 생활 팁 모음.",
+          links: [{ label: "Site", url: "https://homes.cs.washington.edu/~mernst/advice/" }]
+        },
+        {
+          title: "Problem Solving Strategies",
+          authors: "Terence Tao",
+          year: 2010,
+          tags: ["Problem solving", "Blog"],
+          notes: "문제풀이/연구 사고법에 대한 글.",
+          links: [{ label: "Blog", url: "https://terrytao.wordpress.com/2010/10/21/245a-problem-solving-strategies/" }]
+        }
+      ]
+    };
+
+    /*******************************************************************
+     * Helpers
+     *******************************************************************/
+    function uniq(arr) { return Array.from(new Set(arr)); }
+
+    function normalizeText(s) {
+      if (s === null || s === undefined) return "";
+      return String(s).toLowerCase();
+    }
+
+    function itemToSearchBlob(item) {
+      return [
+        item.title, item.authors, item.year, item.notes,
+        (item.tags || []).join(" "),
+        (item.links || []).map(l => l.label + " " + l.url).join(" ")
+      ].join(" ").toLowerCase();
+    }
+
+    function buildTagOptions(category) {
+      const tags = uniq((DATA[category] || []).flatMap(x => x.tags || [])).sort((a,b)=>a.localeCompare(b));
+      const select = document.getElementById(`${category}-tag`);
+      if (!select) return;
+      select.innerHTML = "";
+      const allOpt = document.createElement("option");
+      allOpt.value = "all";
+      allOpt.textContent = "All tags";
+      select.appendChild(allOpt);
+
+      tags.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        select.appendChild(opt);
+      });
+    }
+
+    function buildSortOptions(category) {
+      const select = document.getElementById(`${category}-sort`);
+      if (!select) return;
+
+      const opts = [
+        { value: "year_desc", label: "Sort: year (new→old)" },
+        { value: "year_asc", label: "Sort: year (old→new)" },
+        { value: "title_asc", label: "Sort: title (A→Z)" },
+        { value: "author_asc", label: "Sort: author (A→Z)" }
+      ];
+
+      select.innerHTML = "";
+      opts.forEach(o => {
+        const opt = document.createElement("option");
+        opt.value = o.value;
+        opt.textContent = o.label;
+        select.appendChild(opt);
+      });
+
+      // default: year_desc for paper/optimizer/textbook, title for etc maybe
+      if (category === "etc" || category === "lecture") select.value = "title_asc";
+      if (category === "learning-theory" || category === "mathematics") select.value = "year_desc";
+    }
+
+    function getComparableYear(y) {
+      // lecture uses "상~" etc; treat as 0
+      const n = Number(y);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function sortItems(items, mode) {
+      const arr = [...items];
+      switch (mode) {
+        case "year_asc":
+          arr.sort((a,b)=> getComparableYear(a.year) - getComparableYear(b.year) || a.title.localeCompare(b.title));
+          break;
+        case "title_asc":
+          arr.sort((a,b)=> a.title.localeCompare(b.title));
+          break;
+        case "author_asc":
+          arr.sort((a,b)=> (a.authors||"").localeCompare(b.authors||"") || a.title.localeCompare(b.title));
+          break;
+        case "year_desc":
+        default:
+          arr.sort((a,b)=> getComparableYear(b.year) - getComparableYear(a.year) || a.title.localeCompare(b.title));
+          break;
+      }
+      return arr;
+    }
+
+    function filterItems(category) {
+      const qEl = document.getElementById(`${category}-search`);
+      const tagEl = document.getElementById(`${category}-tag`);
+      const sortEl = document.getElementById(`${category}-sort`);
+
+      const query = normalizeText(qEl ? qEl.value.trim() : "");
+      const tag = tagEl ? tagEl.value : "all";
+      const sortMode = sortEl ? sortEl.value : "year_desc";
+
+      let items = DATA[category] || [];
+
+      if (tag && tag !== "all") {
+        items = items.filter(x => (x.tags || []).includes(tag));
+      }
+
+      if (query) {
+        items = items.filter(x => itemToSearchBlob(x).includes(query));
+      }
+
+      items = sortItems(items, sortMode);
+
+      return { items, total: (DATA[category] || []).length };
+    }
+
+    function renderCategory(category) {
+      const tbody = document.querySelector(`#${category}-table tbody`);
+      const countEl = document.getElementById(`${category}-count`);
+      if (!tbody) return;
+
+      const { items, total } = filterItems(category);
+
+      tbody.innerHTML = "";
+      items.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-category", category);
+        tr.setAttribute("data-index", String(idx));
+        tr.style.cursor = "pointer";
+
+        const titleTd = document.createElement("td");
+        titleTd.className = "col-title";
+        titleTd.innerHTML = `
+          <div class="resource-title">${escapeHtml(item.title)}</div>
+          <div class="resource-meta">
+            ${(item.tags || []).slice(0, 2).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+            ${item.notes ? `<span class="badge">📝 ${escapeHtml(shorten(item.notes, 70))}</span>` : ""}
+          </div>
+        `;
+
+        const authorTd = document.createElement("td");
+        authorTd.className = "col-author";
+        authorTd.innerHTML = escapeHtml(item.authors || "—");
+
+        const yearTd = document.createElement("td");
+        yearTd.className = "col-year hide-mobile";
+        yearTd.innerHTML = escapeHtml(item.year || "—");
+
+        const tagsTd = document.createElement("td");
+        tagsTd.className = "col-tags hide-mobile";
+        tagsTd.innerHTML = (item.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ");
+
+        const linkTd = document.createElement("td");
+        linkTd.className = "col-link";
+        linkTd.innerHTML = renderLinksInline(item.links || []);
+
+        tr.appendChild(titleTd);
+        tr.appendChild(authorTd);
+        tr.appendChild(yearTd);
+        tr.appendChild(tagsTd);
+        tr.appendChild(linkTd);
+
+        // Row click => modal. (Links should not trigger row click)
+        tr.addEventListener("click", () => openModal(category, item));
+        linkTd.querySelectorAll("a").forEach(a => {
+          a.addEventListener("click", (e) => e.stopPropagation());
         });
 
-        function showCategory(category) {
-            // Hide main page
-            document.getElementById('main-page').style.display = 'none';
-            
-            // Hide all resource pages
-            const pages = document.querySelectorAll('.resource-page');
-            pages.forEach(page => page.style.display = 'none');
-            
-            // Show selected category page
-            const selectedPage = document.getElementById(category + '-page');
-            if (selectedPage) {
-                selectedPage.style.display = 'block';
-                selectedPage.classList.add('fade-in');
-                window.scrollTo(0, 0);
-            }
-        }
+        tbody.appendChild(tr);
+      });
 
-        function showMain() {
-            // Hide all resource pages
-            const pages = document.querySelectorAll('.resource-page');
-            pages.forEach(page => page.style.display = 'none');
-            
-            // Show main page
-            document.getElementById('main-page').style.display = 'grid';
-            window.scrollTo(0, 0);
+      if (countEl) {
+        const shown = items.length;
+        countEl.textContent = `Showing ${shown} / ${total}`;
+      }
+
+      // Update main card counts
+      const badge = document.querySelector(`[data-count-for="${category}"]`);
+      if (badge) badge.textContent = `${(DATA[category] || []).length} items`;
+    }
+
+    function renderLinksInline(links) {
+      if (!links || links.length === 0) return "<span class='muted'>—</span>";
+      const top = links.slice(0, 2).map(l =>
+        `<a class="resource-link" href="${escapeAttr(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)} →</a>`
+      ).join(" ");
+      const rest = links.length > 2 ? `<span class="muted">+${links.length - 2}</span>` : "";
+      return `<div class="links">${top} ${rest}</div>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    function escapeAttr(str) {
+      return escapeHtml(str).replaceAll("`", "&#096;");
+    }
+    function shorten(s, n) {
+      const t = String(s);
+      if (t.length <= n) return t;
+      return t.slice(0, n - 1) + "…";
+    }
+
+    /*******************************************************************
+     * Modal
+     *******************************************************************/
+    function openModal(category, item) {
+      const modal = document.getElementById("detail-modal");
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+
+      document.getElementById("modal-title").textContent = item.title || "—";
+      document.getElementById("modal-subtitle").textContent = CATEGORY_LABELS[category] ? `${CATEGORY_LABELS[category]} • click outside to close` : "click outside to close";
+      document.getElementById("modal-authors").textContent = item.authors || "—";
+      document.getElementById("modal-year").textContent = item.year || "—";
+      document.getElementById("modal-notes").textContent = item.notes || "—";
+
+      const tags = (item.tags || []);
+      document.getElementById("modal-tags").innerHTML = tags.length
+        ? tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ")
+        : "—";
+
+      const linksEl = document.getElementById("modal-links");
+      linksEl.innerHTML = "";
+      (item.links || []).forEach(l => {
+        const a = document.createElement("a");
+        a.className = "resource-link";
+        a.href = l.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = `${l.label} →`;
+        linksEl.appendChild(a);
+      });
+
+      // focus close button for accessibility
+      setTimeout(() => {
+        const btn = document.querySelector(".modal-close");
+        if (btn) btn.focus();
+      }, 0);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("detail-modal");
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    /*******************************************************************
+     * Navigation
+     *******************************************************************/
+    function showCategory(category) {
+      document.getElementById("main-page").style.display = "none";
+
+      document.querySelectorAll(".resource-page").forEach(p => p.style.display = "none");
+      const page = document.getElementById(`${category}-page`);
+      if (page) {
+        page.style.display = "block";
+        page.classList.remove("fade-in");
+        void page.offsetWidth;
+        page.classList.add("fade-in");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        location.hash = category;
+      }
+    }
+
+    function showMain() {
+      document.querySelectorAll(".resource-page").forEach(p => p.style.display = "none");
+      document.getElementById("main-page").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    /*******************************************************************
+     * Theme
+     *******************************************************************/
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute("data-theme") || "dark";
+      const next = current === "light" ? "dark" : "light";
+      html.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      updateThemeIcon(next);
+    }
+
+    function updateThemeIcon(theme) {
+      const icon = document.querySelector(".theme-icon");
+      if (!icon) return;
+      icon.textContent = theme === "light" ? "☀️" : "🌙";
+    }
+
+    /*******************************************************************
+     * Global Search
+     *******************************************************************/
+    function clearGlobalSearch() {
+      const input = document.getElementById("global-search-input");
+      input.value = "";
+      renderGlobalSearch("");
+      input.focus();
+    }
+
+    function renderGlobalSearch(queryRaw) {
+      const query = normalizeText(queryRaw.trim());
+      const panel = document.getElementById("global-search-results");
+      const list = document.getElementById("global-search-list");
+      const count = document.getElementById("global-search-count");
+
+      if (!query) {
+        panel.style.display = "none";
+        list.innerHTML = "";
+        count.textContent = "";
+        return;
+      }
+
+      const results = [];
+      Object.keys(DATA).forEach(cat => {
+        (DATA[cat] || []).forEach(item => {
+          if (itemToSearchBlob(item).includes(query)) {
+            results.push({ cat, item });
+          }
+        });
+      });
+
+      const top = results.slice(0, 18);
+
+      list.innerHTML = "";
+      top.forEach(r => {
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.addEventListener("click", () => {
+          showCategory(r.cat);
+          // pre-fill category search
+          const qEl = document.getElementById(`${r.cat}-search`);
+          if (qEl) {
+            qEl.value = queryRaw;
+            renderCategory(r.cat);
+          }
+          // open modal for this item (after a tick)
+          setTimeout(() => openModal(r.cat, r.item), 60);
+        });
+
+        card.innerHTML = `
+          <div class="result-kicker">
+            <span class="result-category">${escapeHtml(CATEGORY_LABELS[r.cat] || r.cat)}</span>
+            <span class="muted">${escapeHtml(r.item.year || "")}</span>
+          </div>
+          <div class="result-title">${escapeHtml(r.item.title)}</div>
+          <div class="result-authors">${escapeHtml(r.item.authors || "")}</div>
+        `;
+        list.appendChild(card);
+      });
+
+      panel.style.display = "block";
+      count.textContent = `${results.length} matches (showing up to ${top.length})`;
+    }
+
+    /*******************************************************************
+     * Init
+     *******************************************************************/
+    document.addEventListener("DOMContentLoaded", () => {
+      // theme
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      updateThemeIcon(savedTheme);
+
+      // build filters and render all categories
+      Object.keys(DATA).forEach(cat => {
+        buildTagOptions(cat);
+        buildSortOptions(cat);
+
+        const searchEl = document.getElementById(`${cat}-search`);
+        const tagEl = document.getElementById(`${cat}-tag`);
+        const sortEl = document.getElementById(`${cat}-sort`);
+
+        if (searchEl) searchEl.addEventListener("input", () => renderCategory(cat));
+        if (tagEl) tagEl.addEventListener("change", () => renderCategory(cat));
+        if (sortEl) sortEl.addEventListener("change", () => renderCategory(cat));
+
+        renderCategory(cat);
+      });
+
+      // global search
+      const globalInput = document.getElementById("global-search-input");
+      globalInput.addEventListener("input", (e) => renderGlobalSearch(e.target.value));
+
+      // keyboard shortcuts
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const active = document.activeElement;
+          const isTyping = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
+          if (!isTyping) {
+            e.preventDefault();
+            globalInput.focus();
+          }
         }
-    </script>
+        if (e.key === "Escape") {
+          // close modal if open
+          const modal = document.getElementById("detail-modal");
+          if (modal && modal.style.display === "flex") {
+            closeModal();
+            return;
+          }
+          // clear global search if focused
+          if (document.activeElement === globalInput && globalInput.value) {
+            clearGlobalSearch();
+          }
+        }
+      });
+
+      // modal outside click
+      const modal = document.getElementById("detail-modal");
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // hash routing
+      const hash = (location.hash || "").replace("#", "");
+      if (hash && DATA[hash]) {
+        showCategory(hash);
+      } else {
+        document.getElementById("main-page").style.display = "block";
+      }
+    });
+  </script>
 </body>
 </html>
