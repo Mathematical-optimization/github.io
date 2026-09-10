@@ -1,0 +1,317 @@
+{
+  "lastUpdated": "2026-09-10",
+  "categoryOrder": [
+    "textbook",
+    "lecture",
+    "paper",
+    "optimizer",
+    "discrete",
+    "tooling",
+    "learning-theory",
+    "mathematics",
+    "etc"
+  ],
+  "categoryLabels": {
+    "textbook": "Textbooks & Monographs",
+    "lecture": "Lectures & Notes",
+    "paper": "Papers: Optimization & ML Theory",
+    "optimizer": "Deep Learning Optimizers",
+    "discrete": "Discrete & Combinatorial",
+    "tooling": "Solvers & Tooling",
+    "learning-theory": "Learning Theory",
+    "mathematics": "Mathematics Foundations",
+    "etc": "Research Workflow"
+  },
+  "categoryIcons": {
+    "textbook": "📚",
+    "lecture": "🎓",
+    "paper": "🧠",
+    "optimizer": "🚀",
+    "discrete": "🧩",
+    "tooling": "🧰",
+    "learning-theory": "📈",
+    "mathematics": "📐",
+    "etc": "🔎"
+  },
+  "categoryDesc": {
+    "textbook": "교재/모노그래프: convex, stochastic, manifold, OT, ML 기초까지.",
+    "lecture": "공개 강의/노트: 빠른 캐치업과 강의식 복습용.",
+    "paper": "핵심 논문/서베이: 알고리즘, 수렴, 일반화, 비볼록 이론.",
+    "optimizer": "딥러닝 옵티마이저: AdamW, SAM, Shampoo, SOAP, Muon, memory-efficient methods.",
+    "discrete": "조합/정수 최적화: LP/ILP, 네트워크 플로우, 근사알고리즘, CP.",
+    "tooling": "실전 도구: modeling languages, conic/QP/NLP/MIP solvers, differentiable optimization.",
+    "learning-theory": "학습이론: regret, bandits, PAC-Bayes, 일반화, online learning.",
+    "mathematics": "기반 수학: 선형대수, 행렬해석, 확률, 측도론, functional analysis.",
+    "etc": "연구 workflow: 문헌 탐색, 논문쓰기, 재현성, 생산성."
+  },
+  "appVersion": "4.0.0",
+  "sourceEntryCount": 233,
+  "originalEntryCount": 224,
+  "paths": {
+    "core": {
+      "title": "볼록 최적화·1차 방법",
+      "short": "볼록 최적화",
+      "desc": "볼록성 → 쌍대성 → 경사·근접 방법 → 가속",
+      "categories": [
+        "textbook",
+        "lecture",
+        "paper"
+      ],
+      "terms": [
+        "convex",
+        "duality",
+        "first-order",
+        "proximal",
+        "nesterov",
+        "admm"
+      ],
+      "priorityBoost": [
+        "Core"
+      ],
+      "prerequisites": "미적분, 선형대수. 증명과 간단한 이차함수 실험을 함께 진행하세요.",
+      "steps": [
+        [
+          "c3179514fa7c",
+          "볼록성·최적성·쌍대성",
+          "KKT 조건과 강한 쌍대성의 가정을 구분합니다."
+        ],
+        [
+          "fb34c321ff45",
+          "수치 최적화의 기본기",
+          "선 탐색과 Newton 방법을 구현합니다."
+        ],
+        [
+          "8e44e7e28998",
+          "수렴률과 복잡도",
+          "smoothness·convexity에 따른 수렴률을 비교합니다."
+        ],
+        [
+          "736b2b1da297",
+          "근접 방법과 가속",
+          "ISTA와 FISTA의 목적함수 감소를 비교합니다."
+        ]
+      ]
+    },
+    "stochastic": {
+      "title": "확률적·비볼록 최적화",
+      "short": "확률적 최적화",
+      "desc": "확률근사 → SGD → 분산감소 → 비볼록 수렴",
+      "categories": [
+        "textbook",
+        "paper",
+        "learning-theory"
+      ],
+      "terms": [
+        "stochastic",
+        "sgd",
+        "variance reduction",
+        "nonconvex",
+        "non-convex",
+        "saddle",
+        "approximation"
+      ],
+      "priorityBoost": [
+        "Core",
+        "Recommended"
+      ],
+      "prerequisites": "조건부기댓값, martingale의 기초, smooth optimization. 기댓값·확률·거의 확실한 수렴을 구별하세요.",
+      "steps": [
+        [
+          "715122e96ef4",
+          "확률근사와 동역학",
+          "학습률과 잡음에 필요한 가정을 정리합니다."
+        ],
+        [
+          "639ba756f1ad",
+          "SGD 수렴 분석",
+          "수렴 정리별 가정·결론 표를 만듭니다."
+        ],
+        [
+          "175017b2a8f9",
+          "비볼록 최적화",
+          "정상점 수렴과 전역 최적해 수렴을 구분합니다."
+        ],
+        [
+          "473c340d42cd",
+          "분산감소",
+          "oracle complexity와 배치 크기의 관계를 읽습니다."
+        ]
+      ]
+    },
+    "dlopt": {
+      "title": "딥러닝 옵티마이저 연구",
+      "short": "DL 옵티마이저",
+      "desc": "Adam·Shampoo·SAM과 대규모 학습의 설계 선택",
+      "categories": [
+        "optimizer"
+      ],
+      "terms": [],
+      "priorityBoost": [
+        "Frontier",
+        "Core"
+      ],
+      "prerequisites": "SGD, 행렬 연산, 신경망 학습. 각 방법의 업데이트 식·상태 메모리·가정을 나란히 비교하세요.",
+      "steps": [
+        [
+          "345d0fe933fc",
+          "적응적 좌표별 스케일",
+          "moment 추정과 실제 전처리 행렬을 구분합니다."
+        ],
+        [
+          "7d51e93cadaf",
+          "행렬 구조의 사전조건화",
+          "텐서 축별 preconditioner를 유도합니다."
+        ],
+        [
+          "e5d2029d54e1",
+          "SAM의 목적과 갱신",
+          "섭동 반경·정규화·기울기 평가를 비교합니다."
+        ],
+        [
+          "641fe7bda9b9",
+          "Shampoo와 Adam의 연결",
+          "고유기저 변경과 대각 적응의 역할을 읽습니다."
+        ]
+      ]
+    },
+    "math": {
+      "title": "기반 수학 다지기",
+      "short": "기반 수학",
+      "desc": "선형대수·행렬해석·확률·수치선형대수",
+      "categories": [
+        "mathematics",
+        "textbook",
+        "lecture"
+      ],
+      "terms": [
+        "matrix",
+        "probability",
+        "measure",
+        "concentration",
+        "linear algebra",
+        "functional"
+      ],
+      "priorityBoost": [
+        "Core",
+        "Recommended"
+      ],
+      "prerequisites": "대학 미적분. 추상 개념을 Hessian·공분산·이차형식 예제에 연결하세요.",
+      "steps": [
+        [
+          "c4d53b0cd07c",
+          "선형사상과 스펙트럼",
+          "쌍선형 형식과 선형연산자를 구분합니다."
+        ],
+        [
+          "727fc288a79e",
+          "행렬해석",
+          "고윳값 부등식과 PSD 순서를 정리합니다."
+        ],
+        [
+          "182c40fc6de4",
+          "확률과 집중",
+          "확률행렬에 필요한 tail bound를 읽습니다."
+        ],
+        [
+          "a646608191b6",
+          "수치선형대수",
+          "조건수와 안정성을 직접 실험합니다."
+        ]
+      ]
+    },
+    "tools": {
+      "title": "솔버·도구 실습",
+      "short": "도구 실습",
+      "desc": "모델링 → 수치 솔버 → 미분 가능한 최적화",
+      "categories": [
+        "tooling",
+        "discrete"
+      ],
+      "terms": [
+        "solver",
+        "modeling",
+        "cvx",
+        "mip",
+        "conic",
+        "differentiable",
+        "numerical"
+      ],
+      "priorityBoost": [
+        "Practical",
+        "Core"
+      ],
+      "prerequisites": "Python 또는 Julia, 볼록 최적화의 기본기. 동일 문제의 해와 잔차를 서로 다른 솔버에서 비교하세요.",
+      "steps": [
+        [
+          "e9eacb200b9e",
+          "볼록 문제 모델링",
+          "제약식·목적함수와 DCP 규칙을 연결합니다."
+        ],
+        [
+          "674d94fdb44e",
+          "QP 풀이",
+          "primal·dual residual과 정확도 설정을 확인합니다."
+        ],
+        [
+          "894bf85ca012",
+          "최적화 레이어",
+          "해를 통한 미분이 가능한 조건을 확인합니다."
+        ],
+        [
+          "60a9a780a91a",
+          "암묵적 미분",
+          "unrolling과 implicit differentiation을 비교합니다."
+        ]
+      ]
+    },
+    "spectral": {
+      "title": "곡률·잡음·이차모형 연구",
+      "short": "곡률·이차모형",
+      "desc": "이차모형 → Hessian spectrum → SLQ → 사전조건화",
+      "categories": [
+        "paper",
+        "optimizer",
+        "textbook",
+        "mathematics",
+        "tooling"
+      ],
+      "terms": [
+        "quadratic",
+        "hessian",
+        "lanczos",
+        "preconditioning",
+        "shampoo",
+        "natural gradient",
+        "bayesian",
+        "matrix"
+      ],
+      "priorityBoost": [
+        "Core",
+        "Frontier"
+      ],
+      "prerequisites": "SPD 행렬, 공분산, 확률적 최적화. 곡률과 잡음 공분산의 변환을 함께 추적하세요.",
+      "steps": [
+        [
+          "9ce02896f10a",
+          "잡음이 있는 이차모형",
+          "배치 크기·모멘텀·전처리의 영향을 분리합니다."
+        ],
+        [
+          "3e998303fdbb",
+          "Hessian 스펙트럼",
+          "스펙트럼과 학습 동역학의 관계를 읽습니다."
+        ],
+        [
+          "1c3b07e01607",
+          "SLQ와 행렬 함수",
+          "probe 수·Lanczos step·근사 오차를 구분합니다."
+        ],
+        [
+          "7d51e93cadaf",
+          "구조적 사전조건화",
+          "원래 좌표와 변환된 좌표의 곡률을 비교합니다."
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "index.html": "94e3627e61b74e00c92c167c4ce85318db102bbef54a43b395ad0b064079746d",
+  "README.ko.md": "eec5cfaec202dac4f2443e7ab7b2c9a11e8aeebb58c4f04a9f42c6bcf63ba9c9",
+  "build.py": "7691dc1f2f8d283a1465604fde24caa08072143aaf2e05cf9f8b2d2d2c7f6620",
+  "src/index.template.html": "89c785b1f492cec1be1300753549f9b4f785f8d0f62dac0a53862352663d3dc0",
+  "src/styles.css": "2f19a78c7e5f42057a4c14b95bcf5758ed469c2ea32ae15c113d7c30c8f2cdad",
+  "src/app.js": "4354633d314de8e0dc74ff7a47b14b8244b648962b9ff863c8cd9b4d2262eeb9",
+  "data/resources.json": "b4c4c4668b3854fa7f1b1693450fd340457f8e31641d4ddffc9d909d973ee3fc",
+  "data/site-meta.json": "cb1a49d0f75aec34b7f646604b64e6dd447337bd7d225498b806f8444c675989",
+  "tests/regression.test.cjs": "0ca7fdd9b368da70b1af8ba1e84ad5d3c9e8e7cada02a26c19a6502782bb997f",
+  "docs/CHANGELOG.ko.md": "4612ba2d06ac10926a4640347d9ab83f2df15ec2702c2c5dc5de0eaacfb2fc67",
+  "docs/reference-audit.json": "1b8c5a3df1c7ad6229fa77d31e15583a817d1dab691f9e1defd906b729f00d37"
+}

@@ -1,0 +1,649 @@
+{
+  "reviewedAt": "2026-09-10",
+  "scope": "Selected high-impact metadata/link review; not an exhaustive live-link verification of all 224 entries.",
+  "corrections": [
+    {
+      "id": "736b2b1da297",
+      "patch": {
+        "links": [
+          {
+            "label": "DOI",
+            "url": "https://doi.org/10.1137/080716542"
+          },
+          {
+            "label": "PDF",
+            "url": "https://www.ceremade.dauphine.fr/~carlier/FISTA"
+          }
+        ]
+      },
+      "evidence": [
+        "https://www.ceremade.dauphine.fr/~carlier/FISTA",
+        "https://arxiv.org/abs/0903.4725"
+      ],
+      "reason": "기존 arXiv 링크는 FISTA가 아니라 Boundedness of Sublinear Operators on Product Hardy Spaces 논문. 실제 논문 첫 페이지에서 DOI, 제목, 저자, 2009년 확인."
+    },
+    {
+      "id": "1d03a527e211",
+      "patch": {
+        "links": [
+          {
+            "label": "Author page",
+            "url": "https://web.stanford.edu/~boyd/papers/admm_distr_stats.html"
+          }
+        ]
+      },
+      "evidence": [
+        "https://web.stanford.edu/~boyd/papers/admm_distr_stats.html"
+      ],
+      "reason": "기존 arXiv 링크 1106.5732는 무관한 intersection cohomology 논문."
+    },
+    {
+      "id": "939cd881785e",
+      "patch": {
+        "links": [
+          {
+            "label": "PMLR",
+            "url": "https://proceedings.mlr.press/v28/jaggi13.html"
+          }
+        ]
+      },
+      "evidence": [
+        "https://proceedings.mlr.press/v28/jaggi13.html"
+      ],
+      "reason": "기존 arXiv 링크 1309.2029는 무관한 Q-spaces 논문."
+    },
+    {
+      "id": "a2bbcf810581",
+      "patch": {
+        "links": [
+          {
+            "label": "SIAM / DOI",
+            "url": "https://epubs.siam.org/doi/10.1137/100802001"
+          }
+        ],
+        "access": "Publisher"
+      },
+      "evidence": [
+        "https://epubs.siam.org/doi/10.1137/100802001"
+      ],
+      "reason": "검증되지 않는 arXiv 번호를 공식 2012 SIAM 출판 레코드로 교체."
+    },
+    {
+      "id": "175017b2a8f9",
+      "patch": {
+        "authors": "Prateek Jain, Purushottam Kar",
+        "links": [
+          {
+            "label": "arXiv",
+            "url": "https://arxiv.org/abs/1712.07897"
+          }
+        ]
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1712.07897"
+      ],
+      "reason": "잘못된 arXiv 번호 1710.05406 수정; 저자 Purushottam 철자 수정."
+    },
+    {
+      "id": "473c340d42cd",
+      "patch": {
+        "title": "SPIDER: Near-Optimal Non-Convex Optimization via Stochastic Path Integrated Differential Estimator",
+        "authors": "Cong Fang, Chris Junchi Li, Zhouchen Lin, Tong Zhang"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1807.01695"
+      ],
+      "reason": "SPIDER 저자 4명이 전부 다른 논문 저자로 기재되어 있었음."
+    },
+    {
+      "id": "4dd112b5bfff",
+      "patch": {
+        "authors": "Hong Liu, Zhiyuan Li, David Hall, Percy Liang, Tengyu Ma"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2305.14342"
+      ],
+      "reason": "Sophia 제1저자는 Hao Liu가 아니라 Hong Liu이며 공저자 복원."
+    },
+    {
+      "id": "39ae5ffac382",
+      "patch": {
+        "authors": "Jungmin Kwon, Jeongseop Kim, Hyunseo Park, In Kwon Choi"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2102.11600"
+      ],
+      "reason": "ASAM 저자가 전혀 다른 사람으로 기재되어 있었음."
+    },
+    {
+      "id": "639ba756f1ad",
+      "patch": {
+        "authors": "Guillaume Garrigos, Robert M. Gower"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2301.11235"
+      ],
+      "reason": "G. G. (Garrigos), et al.이라는 부정확한 저자 문자열 수정."
+    },
+    {
+      "id": "05135e54b1fb",
+      "patch": {
+        "authors": "Pascal Germain, Francis Bach, Alexandre Lacoste, Simon Lacoste-Julien"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1605.08636"
+      ],
+      "reason": "PAC-Bayesian Theory Meets Bayesian Inference 저자가 다른 논문의 저자로 기재되어 있었음. 2016년 유지."
+    },
+    {
+      "id": "888e7d2b5c06",
+      "patch": {
+        "title": "Large-Scale Convex Optimization: Algorithms & Analyses via Monotone Operators",
+        "authors": "Ernest K. Ryu, Wotao Yin",
+        "links": [
+          {
+            "label": "Book & lectures",
+            "url": "https://large-scale-book.mathopt.com/"
+          }
+        ]
+      },
+      "evidence": [
+        "https://large-scale-book.mathopt.com/"
+      ],
+      "reason": "잘못된 저자 Kyungseok Ryu를 교정하고 공동저자 Wotao Yin 복원."
+    },
+    {
+      "id": "4a7235e190e1",
+      "patch": {
+        "title": "A Survey on Statistical Theory of Deep Learning: Approximation, Training Dynamics, and Generative Models",
+        "authors": "Namjoon Suh, Guang Cheng"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2401.07187"
+      ],
+      "reason": "비어 있던 저자와 누락된 부제 복원."
+    },
+    {
+      "id": "1f6e3195f444",
+      "patch": {
+        "title": "Conditional Gradient Methods",
+        "authors": "Gábor Braun, Alejandro Carderera, Cyrille W. Combettes, Hamed Hassani, Amin Karbasi, Aryan Mokhtari, Sebastian Pokutta"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2211.14103"
+      ],
+      "reason": "실제 제목에 없는 (A Modern View) 제거, 정확한 저자 복원."
+    },
+    {
+      "id": "f6ad5ecd8b40",
+      "patch": {
+        "title": "Optimization for Deep Learning: Theory and Algorithms"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1912.08957"
+      ],
+      "reason": "실제 논문 제목으로 교정."
+    },
+    {
+      "id": "16cc7e8c111e",
+      "patch": {
+        "title": "Convex Optimization: Algorithms and Complexity"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1405.4980"
+      ],
+      "reason": "같은 arXiv 1405.4980을 textbook 항목과 다른 제목으로 잘못 기재. 중복 병합 대상."
+    },
+    {
+      "id": "fcf42d306dee",
+      "patch": {
+        "title": "Escaping From Saddle Points — Online Stochastic Gradient for Tensor Decomposition"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1503.02101"
+      ],
+      "reason": "설명식 제목을 실제 논문 제목으로 수정."
+    },
+    {
+      "id": "5942fe1ac601",
+      "patch": {
+        "title": "Stochastic First- and Zeroth-order Methods for Nonconvex Stochastic Programming"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1309.5549"
+      ],
+      "reason": "설명식 제목을 실제 논문 제목으로 수정."
+    },
+    {
+      "id": "60e96ae16822",
+      "patch": {
+        "authors": "Dami Choi, Christopher J. Shallue, Zachary Nado, Jaehoon Lee, Chris J. Maddison, George E. Dahl",
+        "links": [
+          {
+            "label": "arXiv",
+            "url": "https://arxiv.org/abs/1910.05446"
+          }
+        ]
+      },
+      "evidence": [
+        "https://arxiv.org/abs/1910.05446"
+      ],
+      "reason": "서지정보 복원 및 PDF 대신 메타데이터 확인 가능한 초록 페이지를 기본 링크로 제공."
+    },
+    {
+      "id": "9f45313b172b",
+      "patch": {
+        "authors": "Marina Danilova, Pavel Dvurechensky, Alexander Gasnikov, Eduard Gorbunov, Sergey Guminov, Dmitry Kamzolov, Innokentiy Shibaev"
+      },
+      "evidence": [
+        "https://arxiv.org/abs/2012.06188"
+      ],
+      "reason": "전체 저자 복원."
+    },
+    {
+      "id": "715122e96ef4",
+      "patch": {
+        "authors": "Vivek S. Borkar",
+        "links": [
+          {
+            "label": "Springer",
+            "url": "https://link.springer.com/book/10.1007/978-93-86279-38-5"
+          }
+        ],
+        "access": "Publisher"
+      },
+      "evidence": [
+        "https://link.springer.com/book/10.1007/978-93-86279-38-5"
+      ],
+      "reason": "기존 Cambridge 해시 URL 대신 확인 가능한 공식 2008 판 레코드 제공."
+    },
+    {
+      "id": "c4d53b0cd07c",
+      "patch": {
+        "title": "Linear Algebra Done Right (4th ed.)",
+        "year": 2024,
+        "access": "Open",
+        "links": [
+          {
+            "label": "Author site / free PDF",
+            "url": "https://linear.axler.net/"
+          },
+          {
+            "label": "Springer",
+            "url": "https://link.springer.com/book/10.1007/978-3-031-41026-0"
+          }
+        ],
+        "notes": "증명 중심 선형대수. 공개된 4판에서 선형사상, 내적공간, 스펙트럼 정리, SVD, 쌍선형 형식과 텐서곱을 학습할 수 있습니다."
+      },
+      "evidence": [
+        "https://linear.axler.net/",
+        "https://link.springer.com/book/10.1007/978-3-031-41026-0"
+      ],
+      "reason": "기존 3판을 저자 제공 무료 4판으로 업그레이드. Springer 저작권 연도 2024를 사용하며 PDF 갱신일과 구분."
+    },
+    {
+      "id": "ac05791145ec",
+      "patch": {
+        "title": "Hugging Face Papers (formerly linked as Papers with Code)",
+        "authors": "Hugging Face",
+        "year": null,
+        "links": [
+          {
+            "label": "Trending Papers",
+            "url": "https://huggingface.co/papers/trending"
+          }
+        ],
+        "notes": "최신 ML 논문과 연결된 모델·데이터셋·코드를 탐색합니다. 기존 Papers with Code 주소는 현재 이 페이지로 연결됩니다."
+      },
+      "evidence": [
+        "https://paperswithcode.com/"
+      ],
+      "reason": "기존 주소가 Hugging Face Trending Papers로 리디렉션되는 사실을 확인. 출판연도와 관계없는 2026 표기 제거."
+    },
+    {
+      "id": "30cc8856ccfb",
+      "patch": {
+        "links": [
+          {
+            "label": "Author book page",
+            "url": "https://homepages.cwi.nl/~lex/co/"
+          }
+        ],
+        "access": "Publisher"
+      },
+      "evidence": [
+        "https://homepages.cwi.nl/~lex/co/",
+        "https://link.springer.com/book/10.1007/978-3-642-24488-9",
+        "https://homepages.cwi.nl/~lex/files/dict.pdf"
+      ],
+      "reason": "기존 Springer 링크는 Korte–Vygen의 다른 책이고 PDF dict.pdf는 Schrijver의 별도 2017 강의노트. 2003 Polyhedra and Efficiency의 저자 공식 페이지로 교체. 543345a86a80 항목과 병합하지 말 것."
+    }
+  ],
+  "additions": [
+    {
+      "title": "Which Algorithmic Choices Matter at Which Batch Sizes? Insights From a Noisy Quadratic Model",
+      "authors": "Guodong Zhang, Lala Li, Zachary Nado, James Martens, Sushant Sachdeva, George E. Dahl, Christopher J. Shallue, Roger Grosse",
+      "year": 2019,
+      "tags": [
+        "Quadratic model",
+        "SGD",
+        "Batch size",
+        "Preconditioning"
+      ],
+      "notes": "잡음이 있는 이차모형으로 배치 크기, 모멘텀, 사전조건화의 효과를 비교합니다. 곡률과 잡음 공분산을 분리하여 optimizer를 분석하는 출발점입니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/1907.04164"
+        }
+      ],
+      "id": "9ce02896f10a",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Guodong Zhang",
+        "Lala Li",
+        "Zachary Nado",
+        "James Martens",
+        "Sushant Sachdeva",
+        "George E. Dahl",
+        "Christopher J. Shallue",
+        "Roger Grosse"
+      ]
+    },
+    {
+      "title": "An Investigation into Neural Net Optimization via Hessian Eigenvalue Density",
+      "authors": "Behrooz Ghorbani, Shankar Krishnan, Ying Xiao",
+      "year": 2019,
+      "tags": [
+        "Hessian",
+        "Spectrum",
+        "SLQ",
+        "Deep learning"
+      ],
+      "notes": "대규모 신경망의 Hessian 고유값 밀도를 추정하여 학습과 곡률의 관계를 관찰합니다. 이론적 이차모형과 실제 신경망의 스펙트럼 실험을 연결합니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/1901.10159"
+        }
+      ],
+      "id": "3e998303fdbb",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Behrooz Ghorbani",
+        "Shankar Krishnan",
+        "Ying Xiao"
+      ]
+    },
+    {
+      "title": "Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature",
+      "authors": "Shashanka Ubaru, Jie Chen, Yousef Saad",
+      "year": 2017,
+      "tags": [
+        "SLQ",
+        "Lanczos",
+        "Trace estimation",
+        "Matrix functions"
+      ],
+      "notes": "Hessian을 명시적으로 구성하지 않고 행렬-벡터 곱으로 trace와 행렬 함수의 스펙트럼 합을 근사하는 SLQ의 이론적 토대입니다.",
+      "links": [
+        {
+          "label": "SIAM / DOI",
+          "url": "https://epubs.siam.org/doi/10.1137/16M1104974"
+        }
+      ],
+      "id": "1c3b07e01607",
+      "category": "mathematics",
+      "access": "Publisher",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Shashanka Ubaru",
+        "Jie Chen",
+        "Yousef Saad"
+      ]
+    },
+    {
+      "title": "New Insights and Perspectives on the Natural Gradient Method",
+      "authors": "James Martens",
+      "year": 2020,
+      "tags": [
+        "Natural gradient",
+        "Fisher",
+        "Information geometry",
+        "Curvature"
+      ],
+      "notes": "Fisher 정보, 자연경사, 매개화 불변성과 2차 최적화의 관계를 정리합니다. Hessian·Fisher·gradient covariance를 구별하며 K-FAC을 읽기 전에 유용합니다. JMLR 2020; 첫 preprint는 2014년입니다.",
+      "links": [
+        {
+          "label": "JMLR",
+          "url": "https://jmlr.org/papers/v21/17-678.html"
+        },
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/1412.1193"
+        }
+      ],
+      "id": "1d03e516b8b8",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ]
+    },
+    {
+      "title": "Stochastic Gradient Descent as Approximate Bayesian Inference",
+      "authors": "Stephan Mandt, Matthew D. Hoffman, David M. Blei",
+      "year": 2017,
+      "tags": [
+        "SGD",
+        "Noise covariance",
+        "Bayesian",
+        "Quadratic model"
+      ],
+      "notes": "최소점 근방의 이차근사와 확산근사 하에서 SGD의 정상분포를 분석합니다. 잡음 공분산, Hessian, 학습률의 상호작용을 이해하는 자료입니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/1704.04289"
+        }
+      ],
+      "id": "6d13bbda6e45",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Stephan Mandt",
+        "Matthew D. Hoffman",
+        "David M. Blei"
+      ]
+    },
+    {
+      "title": "Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability",
+      "authors": "Jeremy M. Cohen, Simran Kaur, Yuanzhi Li, J. Zico Kolter, Ameet Talwalkar",
+      "year": 2021,
+      "tags": [
+        "Edge of stability",
+        "Hessian",
+        "Learning rate",
+        "Training dynamics"
+      ],
+      "notes": "신경망 학습 중 sharpness와 학습률의 관계를 조사합니다. 국소 이차모형의 안정성 조건과 실제 비선형 학습 동역학 사이의 차이를 살펴보기에 좋습니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2103.00065"
+        }
+      ],
+      "id": "55d1b77135f1",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Jeremy M. Cohen",
+        "Simran Kaur",
+        "Yuanzhi Li",
+        "J. Zico Kolter",
+        "Ameet Talwalkar"
+      ]
+    },
+    {
+      "title": "The Bayesian Learning Rule",
+      "authors": "Mohammad Emtiyaz Khan, Håvard Rue",
+      "year": 2023,
+      "tags": [
+        "Natural gradient",
+        "Bayesian",
+        "Exponential family",
+        "Variational inference"
+      ],
+      "notes": "변분 최적화와 자연경사를 통해 여러 학습 알고리즘을 통합적으로 유도합니다. 지수족의 자연·기댓값 매개화와 optimizer의 관계를 학습합니다. JMLR 2023; 첫 preprint는 2021년입니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2107.04562"
+        }
+      ],
+      "id": "76076a1b3b69",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Core",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Mohammad Emtiyaz Khan",
+        "Håvard Rue"
+      ]
+    },
+    {
+      "title": "Efficient and Modular Implicit Differentiation",
+      "authors": "Mathieu Blondel, Quentin Berthet, Marco Cuturi, Roy Frostig, Stephan Hoyer, Felipe Llinares-López, Fabian Pedregosa, Jean-Philippe Vert",
+      "year": 2021,
+      "tags": [
+        "Implicit differentiation",
+        "Bilevel optimization",
+        "Autodiff"
+      ],
+      "notes": "최적화 문제의 해를 미분하는 일반적인 프레임워크를 제시합니다. hyperparameter optimization, bilevel optimization, differentiable solvers를 공부하는 연결 자료입니다. 연도는 첫 preprint 기준입니다.",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2105.15183"
+        }
+      ],
+      "id": "60a9a780a91a",
+      "category": "paper",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Recommended",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Mathieu Blondel",
+        "Quentin Berthet",
+        "Marco Cuturi",
+        "Roy Frostig",
+        "Stephan Hoyer",
+        "Felipe Llinares-López",
+        "Fabian Pedregosa",
+        "Jean-Philippe Vert"
+      ]
+    },
+    {
+      "title": "PyHessian: Neural Networks Through the Lens of the Hessian",
+      "authors": "Zhewei Yao, Amir Gholami, Kurt Keutzer, Michael W. Mahoney",
+      "year": 2020,
+      "tags": [
+        "PyTorch",
+        "Hessian",
+        "Spectrum",
+        "Trace estimation"
+      ],
+      "notes": "Hessian 고유값, trace, spectral density 추정을 실험에 연결하는 도구와 논문입니다. 정확한 작은 행렬 계산과 비교해 수치 추정치를 점검하는 연습에 적합합니다. IEEE BigData 2020; preprint 2019.",
+      "links": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/1912.07145"
+        }
+      ],
+      "id": "e478fb192816",
+      "category": "tooling",
+      "access": "Open",
+      "level": "Advanced",
+      "priority": "Recommended",
+      "verifiedAt": "2026-09-10",
+      "verifiedFields": [
+        "title",
+        "authors",
+        "year",
+        "links"
+      ],
+      "authorList": [
+        "Zhewei Yao",
+        "Amir Gholami",
+        "Kurt Keutzer",
+        "Michael W. Mahoney"
+      ]
+    }
+  ]
+}
